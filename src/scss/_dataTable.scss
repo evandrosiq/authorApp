@@ -1,0 +1,52 @@
+@import "./variables";
+
+.table {
+    &__row {
+        display: flex;
+        justify-content: space-around;
+        padding: 12px 0;
+        border-bottom: 1px solid $light-gray;
+        margin: 0 17px;
+    }
+
+    &__cell {
+        text-align: center;
+        font-size: 14px;
+        line-height: 20px;
+        color: $matte-black;
+        font-family: $font-family;
+        font-weight: 400;
+        border-left: 1px solid $light-gray;
+        padding: 0 15px;
+    }
+
+    &__cell:first-of-type {
+        width: 30%;
+        text-align: left;
+        font-weight: bold;
+        border-left: none;
+    }
+
+
+    &__cell:nth-child(2n) {
+        width: 15%;
+    }
+
+    &__cell:nth-child(3n) {
+        width: 40%;
+    }
+
+    &__cell:last-of-type {
+        width: 15%;
+        display: flex;
+        justify-content: space-evenly;
+    }
+
+    button {
+        background: none;
+        border: none;
+        outline: none;
+        cursor: pointer;
+    }
+
+}
