@@ -1,4 +1,5 @@
 import { DataTable } from "../DataTable";
+import { Footer } from "../Footer";
 import { Header } from "../Header";
 
 
@@ -8,6 +9,7 @@ const Table = () => {
         <table className='table'>
             <Header />
             <DataTable />
+            <Footer />
         </table>
     );
 };
