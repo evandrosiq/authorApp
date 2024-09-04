@@ -2,7 +2,7 @@ export interface Author {
     id: string;
     title: string;
     typeOfWork: string;
-    name: string;
+    author: string;
     lastModify: string;
   }
   

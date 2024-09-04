@@ -6,40 +6,36 @@ export function AuthorForm() {
   // Estado para armazenar os valores do formulário
   const [newItem, setNewItem] = useState({
     title: '',
-    typeOfWork: '',
-    name: ''
+    typeOfWork: '',  // Este campo será atualizado pelo Combobox
+    author: ''
   });
 
   // Estado para mensagens de erro de validação
   const [errors, setErrors] = useState({
     title: '',
     typeOfWork: '',
-    name: ''
+    author: ''
   });
 
-  // Função para lidar com mudanças no formulário
+  // Função para lidar com mudanças nos inputs de texto
   function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
     const { name, value } = event.target;
     setNewItem(prevItem => ({ ...prevItem, [name]: value }));
   }
 
+
   // Função para validar os dados do formulário
   function validate() {
-    let validationErrors = { title: '', typeOfWork: '', name: '' };
+    let validationErrors = { title: '', typeOfWork: '', author: '' };
     let isValid = true;
 
     if (!newItem.title.trim()) {
-      validationErrors.title = 'O título é obrigatório';
+      validationErrors.title = 'Por favor, insira um título válido.';
       isValid = false;
     }
 
-    if (!newItem.typeOfWork.trim()) {
-      validationErrors.typeOfWork = 'O tipo é obrigatório';
-      isValid = false;
-    }
-
-    if (!newItem.name.trim()) {
-      validationErrors.name = 'O nome é obrigatório';
+    if (!newItem.author.trim()) {
+      validationErrors.author = 'Por favor, insira um título válido.';
       isValid = false;
     }
 
@@ -63,16 +59,16 @@ export function AuthorForm() {
       create(item);
 
       // Limpa o formulário após o cadastro
-      setNewItem({ title: '', typeOfWork: '', name: '' });
+      setNewItem({ title: '', typeOfWork: '', author: '' });
     }
   }
 
   return (
-    <div>
-      <h2>Cadastrar Novo Item</h2>
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label htmlFor="title">Título:</label>
+    <div className='form'>
+      <h2 className='form__title'>Cadastrar</h2>
+      <form className='form__wrapper' onSubmit={handleSubmit}>
+        <div className='form__input-content'>
+          <label htmlFor="title">Título</label>
           <input
             type="text"
             id="title"
@@ -83,22 +79,21 @@ export function AuthorForm() {
           {errors.title && <span className="error">{errors.title}</span>}
         </div>
 
-        <div>
-          <label htmlFor="typeOfWork">Tipo:</label>
-          <Combobox />
-          {errors.typeOfWork && <span className="error">{errors.typeOfWork}</span>}
+        <div className='form__input-content'>
+          <label htmlFor="typeOfWork">Tipo</label>
+          <Combobox/>
         </div>
 
-        <div>
-          <label htmlFor="name">Autor:</label>
+        <div className='form__input-content'>
+          <label htmlFor="author">Autor</label>
           <input
             type="text"
-            id="name"
-            name="name"
-            value={newItem.name}
+            id="author"
+            name="author"
+            value={newItem.author}
             onChange={handleChange}
           />
-          {errors.name && <span className="error">{errors.name}</span>}
+          {errors.author && <span className="error">{errors.author}</span>}
         </div>
 
         <button type="submit">Cadastrar</button>

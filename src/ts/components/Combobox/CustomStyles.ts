@@ -1,38 +1,41 @@
 
 
 export const customStyles = {
-    control: (provided: any) => ({
+    control: (provided: any, state:any) => ({
         ...provided,
         border: '1px solid #f08080',
         borderRadius: '10px',
-        paddingRight: '20px',
-        paddingLeft: '15px',
-        marginRight: '33px',
-        marginLeft: '21px',
+        width: 180,
+        boxShadow: state.isFocused ? '0 0 0 1px #ff7f50' : 'none', 
+        borderColor: state.isFocused ? '#ff7f50' : provided.borderColor, 
+        '&:hover': {
+          borderColor: state.isFocused ? '#ff7f50' : provided.borderColor
+        }
     }),
     menu: (provided: any) => ({
         ...provided,
-        width: '100%',
+        width: 180,
         backgroundColor: 'white',
         marginRight: 0,
         marginLeft: 0,
-        marginTop: '16px',
+        marginTop: '6px',
         borderRadius: 0,
         borderBottom: 'none',
         boxShadow: 'none',
     }),
     menuList: (provided: any) => ({
         ...provided,
-        width: '100%',
+        width: 180,
         maxHeight: '590px',
         overflowY: 'auto',
     }),
     option: (provided: any, state: any) => ({
         ...provided,
+        width: 180,
         backgroundColor: state.isSelected ? 'white' : 'white',
         color: state.isSelected ? '#707070' : '#f08080',
         fontFamily: 'Source Sans Pro, sans-serif',
-        fontSize: '18px',
+        fontSize: '16px',
         fontWeight: '700',
         lineHeight: '32px',
         paddingLeft: '25px',
@@ -44,10 +47,10 @@ export const customStyles = {
     valueContainer: (provided: any) => ({
         ...provided,
         fontFamily: 'Source Sans Pro, sans-serif',
-        fontSize: '18px',
-        fontWeight: '700',
-        lineHeight: '32px',
-        color: '#333333'
+        fontSize: '16px',
+        fontWeight: '600',
+        lineHeight: '30px',
+        color: '#707070'
     }),
     indicatorSeparator: (provided: any) => ({
         ...provided,
@@ -59,10 +62,10 @@ export const customStyles = {
             background: 'transparent', 
             width: 0,
         },
-        background: `url("data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz48IS0tIFVwbG9hZGVkIHRvOiBTVkcgUmVwbywgd3d3LnN2Z3JlcG8uY29tLCBHZW5lcmF0b3I6IFNWRyBSZXBvIE1peGVyIFRvb2xzIC0tPg0KPHN2ZyB3aWR0aD0iMTZweCIgaGVpZ2h0PSIxNnB4IiB2aWV3Qm94PSIwIDAgMjQgMjQiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+DQo8cGF0aCBkPSJNNS43MDcxMSA5LjcxMDY5QzUuMzE2NTggMTAuMTAxMiA1LjMxNjU4IDEwLjczNDQgNS43MDcxMSAxMS4xMjQ5TDEwLjU5OTMgMTYuMDEyM0MxMS4zODA1IDE2Ljc5MjcgMTIuNjQ2MyAxNi43OTI0IDEzLjQyNzEgMTYuMDExN0wxOC4zMTc0IDExLjEyMTNDMTguNzA4IDEwLjczMDggMTguNzA4IDEwLjA5NzYgMTguMzE3NCA5LjcwNzA4QzE3LjkyNjkgOS4zMTY1NSAxNy4yOTM3IDkuMzE2NTUgMTYuOTAzMiA5LjcwNzA4TDEyLjcxNzYgMTMuODkyN0MxMi4zMjcxIDE0LjI4MzMgMTEuNjkzOSAxNC4yODMyIDExLjMwMzQgMTMuODkyN0w3LjEyMTMyIDkuNzEwNjlDNi43MzA4IDkuMzIwMTYgNi4wOTc2MyA5LjMyMDE2IDUuNzA3MTEgOS43MTA2OVoiIGZpbGw9IiNmMDgwODAiLz4NCjwvc3ZnPg==") no-repeat right center`,
-        backgroundSize: '15px', 
-        width: '20px', 
-        height: '36px', 
+        background: `url("data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz48IS0tIFVwbG9hZGVkIHRvOiBTVkcgUmVwbywgd3d3LnN2Z3JlcG8uY29tLCBHZW5lcmF0b3I6IFNWRyBSZXBvIE1peGVyIFRvb2xzIC0tPg0KPHN2ZyB3aWR0aD0iODAwcHgiIGhlaWdodD0iODAwcHgiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4NCjxwYXRoIGQ9Ik01LjcwNzExIDkuNzEwNjlDNS4zMTY1OCAxMC4xMDEyIDUuMzE2NTggMTAuNzM0NCA1LjcwNzExIDExLjEyNDlMMTAuNTk5MyAxNi4wMTIzQzExLjM4MDUgMTYuNzkyNyAxMi42NDYzIDE2Ljc5MjQgMTMuNDI3MSAxNi4wMTE3TDE4LjMxNzQgMTEuMTIxM0MxOC43MDggMTAuNzMwOCAxOC43MDggMTAuMDk3NiAxOC4zMTc0IDkuNzA3MDhDMTcuOTI2OSA5LjMxNjU1IDE3LjI5MzcgOS4zMTY1NSAxNi45MDMyIDkuNzA3MDhMMTIuNzE3NiAxMy44OTI3QzEyLjMyNzEgMTQuMjgzMyAxMS42OTM5IDE0LjI4MzIgMTEuMzAzNCAxMy44OTI3TDcuMTIxMzIgOS43MTA2OUM2LjczMDggOS4zMjAxNiA2LjA5NzYzIDkuMzIwMTYgNS43MDcxMSA5LjcxMDY5WiIgZmlsbD0iI2YwODA4MCIvPg0KPC9zdmc+") no-repeat right center`,
+        backgroundSize: '29px', 
+        width: '25px', 
+        height: '36px',
 
     }),
 };
