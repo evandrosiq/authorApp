@@ -1,99 +1,47 @@
-import { EditIcon, DeleteIcon } from "../../assets/icons";
+import { useState } from 'react';
+import { TableRowAuthor } from "../TableRow/TableRowAuthor";
 
 export function AuthorDataTable() {
-    return (
-        <>
-            <tr className="table__row" role="row" >
-                <td className="table__cell" role="cell">Caetano Veloso</td>
-                <td className="table__cell" role="cell">pout-pourri</td>
-                <td className="table__cell" role="cell">Sozinho, Queixa e Sonhos</td>
-                <td className="table__cell" role="cell">
-                    <button className="table__btn btn-edit" title="Editar">
-                        <EditIcon />
-                    </button>
-                    <button className="table__btn btn-delete" title="Excluir">
-                        <DeleteIcon />
-                    </button>
-                </td>
-            </tr>
-            <tr className="table__row" role="row" >
-                <td className="table__cell" role="cell">Caetano Veloso</td>
-                <td className="table__cell" role="cell">pout-pourri</td>
-                <td className="table__cell" role="cell">Sozinho, Queixa e Sonhos</td>
-                <td className="table__cell" role="cell">
-                    <button className="table__btn btn-edit" title="Editar">
-                        <EditIcon />
-                    </button>
-                    <button className="table__btn btn-delete" title="Excluir">
-                        <DeleteIcon />
-                    </button>
-                </td>
-            </tr>
-            <tr className="table__row" role="row" >
-                <td className="table__cell" role="cell">Caetano Veloso</td>
-                <td className="table__cell" role="cell">pout-pourri</td>
-                <td className="table__cell" role="cell">Sozinho, Queixa e Sonhos</td>
-                <td className="table__cell" role="cell">
-                    <button className="table__btn btn-edit" title="Editar">
-                        <EditIcon />
-                    </button>
-                    <button className="table__btn btn-delete" title="Excluir">
-                        <DeleteIcon />
-                    </button>
-                </td>
-            </tr>
-            <tr className="table__row" role="row" >
-                <td className="table__cell" role="cell">Caetano Veloso</td>
-                <td className="table__cell" role="cell">pout-pourri</td>
-                <td className="table__cell" role="cell">Sozinho, Queixa e Sonhos</td>
-                <td className="table__cell" role="cell">
-                    <button className="table__btn btn-edit" title="Editar">
-                        <EditIcon />
-                    </button>
-                    <button className="table__btn btn-delete" title="Excluir">
-                        <DeleteIcon />
-                    </button>
-                </td>
-            </tr>
-            <tr className="table__row" role="row" >
-                <td className="table__cell" role="cell">Caetano Veloso</td>
-                <td className="table__cell" role="cell">pout-pourri</td>
-                <td className="table__cell" role="cell">Sozinho, Queixa e Sonhos</td>
-                <td className="table__cell" role="cell">
-                    <button className="table__btn btn-edit" title="Editar">
-                        <EditIcon />
-                    </button>
-                    <button className="table__btn btn-delete" title="Excluir">
-                        <DeleteIcon />
-                    </button>
-                </td>
-            </tr>
-            <tr className="table__row" role="row" >
-                <td className="table__cell" role="cell">Caetano Veloso</td>
-                <td className="table__cell" role="cell">pout-pourri</td>
-                <td className="table__cell" role="cell">Sozinho, Queixa e Sonhos</td>
-                <td className="table__cell" role="cell">
-                    <button className="table__btn btn-edit" title="Editar">
-                        <EditIcon />
-                    </button>
-                    <button className="table__btn btn-delete" title="Excluir">
-                        <DeleteIcon />
-                    </button>
-                </td>
-            </tr>
-            <tr className="table__row" role="row" >
-                <td className="table__cell" role="cell">Caetano Veloso</td>
-                <td className="table__cell" role="cell">pout-pourri</td>
-                <td className="table__cell" role="cell">Sozinho, Queixa e Sonhos</td>
-                <td className="table__cell" role="cell">
-                    <button className="table__btn btn-edit" title="Editar">
-                        <EditIcon />
-                    </button>
-                    <button className="table__btn btn-delete" title="Excluir">
-                        <DeleteIcon />
-                    </button>
-                </td>
-            </tr>
-        </>
-    );
+  const [message, setMessage] = useState<string | null>(null);
+
+  interface Author {
+    id: string
+    index: number;
+    title: string;
+    typeOfWork: string;
+    author: string;
+  }
+  function handleSuccess(message: string) {
+    setMessage(message);
+    console.log("SUCCESS ===> ", message);
+
+  }
+
+  function handleError(message: string) {
+    setMessage(message);
+    console.log("ERROR ===> ", message);
+  }
+
+  const items = [
+    { id: '123', author: 'Caetano Veloso', typeOfWork: 'pot-pourri', title: 'Sozinho, Queixa e Sonhos', index: 0 },
+    { id: '124', author: 'Caetano Veloso', typeOfWork: 'pot-pourri', title: 'Sozinho, Queixa e Sonhos', index: 1 },
+  ];
+
+  return (
+    <div>
+      {items.map((item: Author) => (
+        <TableRowAuthor
+          key={item.id}
+          id={item.id}
+          index={item.index}
+          author={item.author}
+          typeOfWork={item.typeOfWork}
+          title={item.title}
+          onSuccess={handleSuccess}
+          onError={handleError}
+        />
+      ))}
+      {message && <div className="message">{message}</div>}
+    </div>
+  );
 }

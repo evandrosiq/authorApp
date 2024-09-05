@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import Select, { SingleValue } from 'react-select';
 import { customStyles } from './CustomStyles';
 
@@ -7,31 +7,29 @@ interface Option {
   label: string;
 }
 
-export function Combobox() {
-  const options: Option[] = [
+interface ComboboxProps {
+  onChange: (selectedOption: SingleValue<Option> | null) => void;
+}
+
+export function Combobox({ onChange }: ComboboxProps) {
+  const options = [
     { value: 'obra', label: 'Obra' },
     { value: 'fonograma', label: 'Fonograma' },
     { value: 'potpourri', label: 'Pot-pourri' }
   ];
 
-  const defaultValue: Option = options[0];
-  const classNamePrefix = 'combobox';
-  const [selectedOption, setSelectedOption] = useState<Option>(defaultValue);
+  const defaultValue = options[0];
+  const [selectedOption, setSelectedOption] = useState<{ value: string; label: string } | null>(defaultValue);
 
-
-
-  useEffect(() => {
-    handleChange(selectedOption);
-  }, []);
-
-  const handleChange = (option: SingleValue<Option>) => {
-    if (option) {
-      setSelectedOption(option);
-      console.log('Opção selecionada:', option);
+  function handleChange(selectedOption: SingleValue<Option> | null){
+    setSelectedOption(selectedOption);
+    if (selectedOption) {
+      onChange(selectedOption);
+    } else {
+      onChange(null);
     }
+    console.log('Opção selecionada:', selectedOption);
   };
-
-
 
   return (
     <Select
@@ -41,7 +39,6 @@ export function Combobox() {
       value={selectedOption}
       onChange={handleChange}
       defaultValue={defaultValue}
-      classNamePrefix={classNamePrefix}
     />
   );
 }
