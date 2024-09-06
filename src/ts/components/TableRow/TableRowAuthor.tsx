@@ -17,7 +17,7 @@ export function TableRowAuthor({ id, index, author, typeOfWork, title, onSuccess
       const item = getById(id);
       if (item) {
         // Implementar a lógica de edição, por exemplo, abrir um modal para editar o item
-        const updatedData = { ...item, title: "Novo título" }; // Exemplo de alteração
+        const updatedData = { ...item, title: "Novo título" }; 
         update(id, updatedData);
         onSuccess("Item atualizado com sucesso!");
       } else {

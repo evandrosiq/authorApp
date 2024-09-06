@@ -1,13 +1,28 @@
-// import { useState } from 'react'
+import { useEffect, useState } from 'react'
 // import { AuthorForm } from './components/Form/AuthorForm'
 import Table from './components/Table'
+import { ApplicationContextProvider } from './context/ContextManager'
+import { getAll } from './services/AuthorRepository';
+import { Author } from '../types/Author';
+
 
 function App() {
+  const [tableData, setTableData] = useState<Author[] | null>(null);
+
+  useEffect(() => {
+    const authors = getAll();
+    setTableData(authors);
+    return () => { };
+  }, []);
+
+
   return (
-    <div className='tableMain'>
-      <Table />
-      {/* <AuthorForm /> */}
-    </div>
+    <ApplicationContextProvider tableData={tableData}>
+      <div className='tableMain'>
+        <Table />
+        {/* <AuthorForm /> */}
+      </div>
+    </ApplicationContextProvider>
   )
 }
 

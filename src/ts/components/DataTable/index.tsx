@@ -1,5 +1,8 @@
 import { AuthorDataTable } from "./AuthorDataTable";
+import { useApplicationContext } from "../../context/ContextManager";
+
 
 export function DataTable() {
-    return <AuthorDataTable />
+  const { tableData } = useApplicationContext();
+  return <AuthorDataTable tableData={tableData} />;
 }

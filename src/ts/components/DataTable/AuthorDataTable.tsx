@@ -1,16 +1,16 @@
 import { useState } from 'react';
 import { TableRowAuthor } from "../TableRow/TableRowAuthor";
+import { Author } from '../../../types/Author';
 
-export function AuthorDataTable() {
+
+
+interface AuthorDataTableProps {
+  tableData: Author[] | null;
+}
+
+export function AuthorDataTable({ tableData }: AuthorDataTableProps) {
   const [message, setMessage] = useState<string | null>(null);
 
-  interface Author {
-    id: string
-    index: number;
-    title: string;
-    typeOfWork: string;
-    author: string;
-  }
   function handleSuccess(message: string) {
     setMessage(message);
     console.log("SUCCESS ===> ", message);
@@ -22,25 +22,26 @@ export function AuthorDataTable() {
     console.log("ERROR ===> ", message);
   }
 
-  const items = [
-    { id: '123', author: 'Caetano Veloso', typeOfWork: 'pot-pourri', title: 'Sozinho, Queixa e Sonhos', index: 0 },
-    { id: '124', author: 'Caetano Veloso', typeOfWork: 'pot-pourri', title: 'Sozinho, Queixa e Sonhos', index: 1 },
-  ];
+
 
   return (
     <div>
-      {items.map((item: Author) => (
-        <TableRowAuthor
-          key={item.id}
-          id={item.id}
-          index={item.index}
-          author={item.author}
-          typeOfWork={item.typeOfWork}
-          title={item.title}
-          onSuccess={handleSuccess}
-          onError={handleError}
-        />
-      ))}
+      {tableData && tableData.length > 0 ? (
+        tableData.map((item: Author, index: number) => (
+          <TableRowAuthor
+            key={item.id}
+            id={item.id}
+            index={index}
+            author={item.author}
+            typeOfWork={item.typeOfWork}
+            title={item.title}
+            onSuccess={handleSuccess}
+            onError={handleError}
+          />
+        ))
+      ) : (
+        <div>Não há dados</div>
+      )}
       {message && <div className="message">{message}</div>}
     </div>
   );

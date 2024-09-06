@@ -1,10 +1,4 @@
-export interface Author {
-  id: string;
-  title: string;
-  typeOfWork: string;
-  author: string;
-  lastModify: string;
-}
+import { Author } from '../../types/Author';
 
 export function getAll(): Author[] {
   try {
