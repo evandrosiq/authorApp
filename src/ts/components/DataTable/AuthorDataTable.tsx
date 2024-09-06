@@ -25,7 +25,7 @@ export function AuthorDataTable({ tableData }: AuthorDataTableProps) {
 
 
   return (
-    <div>
+    <tbody className='table__data-table'>
       {tableData && tableData.length > 0 ? (
         tableData.map((item: Author, index: number) => (
           <TableRowAuthor
@@ -40,9 +40,11 @@ export function AuthorDataTable({ tableData }: AuthorDataTableProps) {
           />
         ))
       ) : (
-        <div>Não há dados</div>
+        <tr>
+          <td>Não há dados</td>
+        </tr>
       )}
-      {message && <div className="message">{message}</div>}
-    </div>
+      {/* {message && <tr className="message">{message}</tr>} */}
+    </tbody>
   );
 }

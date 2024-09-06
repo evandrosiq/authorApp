@@ -1,5 +1,5 @@
 import { EditIcon, DeleteIcon } from '../../assets/icons'; 
-import { deleteItem, getById, update } from '../../services/AuthorRepository'; 
+import { deleteItem, getById, update } from '../../services/AuthorService'; 
 
 interface TableRowProps {
   id: string;

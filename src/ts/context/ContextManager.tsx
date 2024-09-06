@@ -1,5 +1,5 @@
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-import { Author } from '../services/AuthorRepository';
+import { Author } from '../../types/Author';
 
 interface ApplicationContextType {
     tableData: Author[] | null;

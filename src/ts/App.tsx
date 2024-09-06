@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 // import { AuthorForm } from './components/Form/AuthorForm'
 import Table from './components/Table'
 import { ApplicationContextProvider } from './context/ContextManager'
-import { getAll } from './services/AuthorRepository';
+import { getAll } from './services/AuthorService';
 import { Author } from '../types/Author';
 
 

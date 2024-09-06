@@ -1,6 +1,10 @@
 @import "./variables";
 
 .table {
+    &__data-table {
+        display: block;
+    }
+
     &__row {
         display: flex;
         justify-content: space-around;

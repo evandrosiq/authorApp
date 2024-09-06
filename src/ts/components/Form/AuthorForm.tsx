@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { create } from '../../services/AuthorRepository';
+import { create } from '../../services/AuthorService';
 import { Combobox } from '../Combobox/Combobox';
 import { InputField } from '../InputField/InputField';
 
