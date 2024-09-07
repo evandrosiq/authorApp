@@ -17,6 +17,7 @@ export interface Option {
 
 export interface ComboboxProps {
     onChange: (selectedOption: SingleValue<Option> | null) => void;
+    defaultValue?: Option;
 }
 
 export interface AuthorDataTableProps {
