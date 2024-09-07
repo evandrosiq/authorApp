@@ -1,9 +1,12 @@
 import { useEffect, useState } from 'react'
-// import { AuthorForm } from './components/Form/AuthorForm'
+import { AuthorForm } from './components/Form/AuthorForm'
 import Table from './components/Table'
 import { ApplicationContextProvider } from './context/ContextManager'
 import { getAll } from './services/AuthorService';
-import { Author } from '../types/Author';
+import { Author } from '../types/AuthorTypes';
+import { EditAuthorForm } from './components/Form/EditAuthorForm';
+import ErrorBoundary from './components/ErrorBoundary';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 
 
 function App() {
@@ -19,8 +22,15 @@ function App() {
   return (
     <ApplicationContextProvider tableData={tableData}>
       <div className='tableMain'>
-        <Table />
-        {/* <AuthorForm /> */}
+        <ErrorBoundary>
+          <Router>
+            <Routes>
+              <Route path="/" element={<Table />} />
+              <Route path="/cadastro" element={<AuthorForm />} />
+              <Route path="/editar/:id" element={<EditAuthorForm />} />
+            </Routes>
+          </Router>
+        </ErrorBoundary>
       </div>
     </ApplicationContextProvider>
   )

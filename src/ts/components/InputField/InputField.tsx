@@ -1,6 +1,5 @@
 import { InputProps } from "../../../types/AuthorTypes";
 
-
 export function InputField({ id, label, name, value, onChange, errorMessage }: InputProps) {
   return (
     <div className="form__input-content">

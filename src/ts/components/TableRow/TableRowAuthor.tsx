@@ -1,31 +1,14 @@
-import { EditIcon, DeleteIcon } from '../../assets/icons'; 
-import { deleteItem, getById, update } from '../../services/AuthorService'; 
+import { TableRowProps } from '../../../types/AuthorTypes';
+import { EditIcon, DeleteIcon } from '../../assets/icons';
+import { deleteItem } from '../../services/AuthorService';
+import { useNavigate } from 'react-router-dom';
 
-interface TableRowProps {
-  id: string;
-  index: number;
-  author: string;
-  typeOfWork: string;
-  title: string;
-  onSuccess: (message: string) => void;
-  onError: (message: string) => void;
-}
 
 export function TableRowAuthor({ id, index, author, typeOfWork, title, onSuccess, onError }: TableRowProps) {
-  const handleEdit = async () => {
-    try {
-      const item = getById(id);
-      if (item) {
-        // Implementar a lógica de edição, por exemplo, abrir um modal para editar o item
-        const updatedData = { ...item, title: "Novo título" }; 
-        update(id, updatedData);
-        onSuccess("Item atualizado com sucesso!");
-      } else {
-        onError("Item não encontrado para edição.");
-      }
-    } catch (error) {
-      onError("Erro ao editar o item.");
-    }
+  const navigate = useNavigate();
+
+  const handleEdit = () => {
+    navigate(`/editar/${id}`);
   };
 
   const handleDelete = () => {
