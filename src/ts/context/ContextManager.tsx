@@ -1,9 +1,6 @@
-import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-import { Author } from '../../types/Author';
+import { createContext, useContext, useState, useEffect } from 'react';
+import { ApplicationContextProviderProps, ApplicationContextType, Author } from '../../types/AuthorTypes';
 
-interface ApplicationContextType {
-    tableData: Author[] | null;
-}
 
 const ApplicationContext = createContext<ApplicationContextType | undefined>(undefined);
 
@@ -16,11 +13,6 @@ export const useApplicationContext = () => {
 
     return context;
 };
-
-interface ApplicationContextProviderProps {
-    children: ReactNode;
-    tableData: Author[] | null;
-}
 
 export const ApplicationContextProvider = ({ children, tableData }: ApplicationContextProviderProps) => {
     const [tableContext, setTableContext] = useState<Author[] | null>(tableData);

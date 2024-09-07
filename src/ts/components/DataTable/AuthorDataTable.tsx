@@ -1,12 +1,10 @@
 import { useState } from 'react';
 import { TableRowAuthor } from "../TableRow/TableRowAuthor";
-import { Author } from '../../../types/Author';
+import { Author, AuthorDataTableProps } from '../../../types/AuthorTypes';
 
 
 
-interface AuthorDataTableProps {
-  tableData: Author[] | null;
-}
+
 
 export function AuthorDataTable({ tableData }: AuthorDataTableProps) {
   const [message, setMessage] = useState<string | null>(null);

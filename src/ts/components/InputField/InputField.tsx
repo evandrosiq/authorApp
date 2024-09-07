@@ -1,12 +1,5 @@
+import { InputProps } from "../../../types/AuthorTypes";
 
-interface InputProps {
-  id: string;
-  label: string;
-  name: string;
-  value: string;
-  onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
-  errorMessage?: string;
-}
 
 export function InputField({ id, label, name, value, onChange, errorMessage }: InputProps) {
   return (

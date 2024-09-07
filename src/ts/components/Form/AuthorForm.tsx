@@ -4,6 +4,7 @@ import { Combobox } from '../Combobox/Combobox';
 import { InputField } from '../InputField/InputField';
 
 export function AuthorForm() {
+  const [currentIndex, setCurrentIndex] = useState(0);
   const [newItem, setNewItem] = useState({
     title: '',
     typeOfWork: '',
@@ -52,13 +53,14 @@ export function AuthorForm() {
       const item = {
         ...newItem,
         id: Date.now().toString(),
-        lastModify: new Date().toISOString()
+        lastModify: new Date().toISOString(),
+        index: currentIndex
       };
       create(item);
       setNewItem({ title: '', typeOfWork: '', author: '' });
+      setCurrentIndex(prevIndex => prevIndex + 1);
     }
   }
-
   return (
     <div className='form'>
       <h2 className='form__title'>Cadastrar</h2>

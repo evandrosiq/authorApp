@@ -1,15 +1,9 @@
 import { useState } from 'react';
 import Select, { SingleValue } from 'react-select';
 import { customStyles } from './CustomStyles';
+import { ComboboxProps, Option } from '../../../types/AuthorTypes';
 
-interface Option {
-  value: string;
-  label: string;
-}
 
-interface ComboboxProps {
-  onChange: (selectedOption: SingleValue<Option> | null) => void;
-}
 
 export function Combobox({ onChange }: ComboboxProps) {
   const options = [
