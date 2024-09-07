@@ -1,4 +1,4 @@
-import { Author } from '../../types/Author';
+import { Author } from '../../types/AuthorTypes';
 
 export function getAll(): Author[] {
   try {
@@ -36,11 +36,11 @@ export function getById(id: string): Author | null {
   }
 }
 
-export function update(id: string, updatedData: Partial<Author>): void {
+export function update(id: string, authorData: Partial<Author>): void {
   try {
     const item = getById(id);
     if (item) {
-      const updatedItem = { ...item, ...updatedData, lastModify: new Date().toISOString() };
+      const updatedItem = { ...item, ...authorData, lastModify: new Date().toISOString() };
       const items = getAll();
       const index = items.findIndex(function (existingItem) {
         return existingItem.id === id;
