@@ -5,25 +5,20 @@ import { ComboboxProps, Option } from '../../../types/AuthorTypes';
 
 
 
-export function Combobox({ onChange }: ComboboxProps) {
+export function Combobox({ onChange, defaultValue }: ComboboxProps) {
   const options = [
     { value: 'obra', label: 'Obra' },
     { value: 'fonograma', label: 'Fonograma' },
     { value: 'potpourri', label: 'Pot-pourri' }
   ];
 
-  const defaultValue = options[0];
-  const [selectedOption, setSelectedOption] = useState<{ value: string; label: string } | null>(defaultValue);
+  const [selectedOption, setSelectedOption] = useState<Option | null>(defaultValue || options[0]);
 
-  function handleChange(selectedOption: SingleValue<Option> | null){
+  function handleChange(selectedOption: SingleValue<Option> | null) {
     setSelectedOption(selectedOption);
-    if (selectedOption) {
-      onChange(selectedOption);
-    } else {
-      onChange(null);
-    }
+    onChange(selectedOption);
     console.log('Opção selecionada:', selectedOption);
-  };
+  }
 
   return (
     <Select
@@ -32,7 +27,6 @@ export function Combobox({ onChange }: ComboboxProps) {
       isSearchable={false}
       value={selectedOption}
       onChange={handleChange}
-      defaultValue={defaultValue}
     />
   );
 }
