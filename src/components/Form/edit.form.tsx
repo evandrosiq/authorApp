@@ -4,9 +4,12 @@ import { getById, update } from '../../services/AuthorService';
 import { InputField } from '../InputField/InputField';
 import { Combobox } from '../Combobox/Combobox';
 import { validateInputs } from '../../validation/validateInputs';
+import { useAuthorActions } from '../../hooks/useAuthorActions';
 
 
 export function EditAuthorForm() {
+    const { handleError, handleSuccess } = useAuthorActions();
+
     const { id } = useParams<{ id: string }>();
     const navigate = useNavigate();
 
@@ -57,15 +60,18 @@ export function EditAuthorForm() {
             author: 'Autor'
         };
 
-        if (authorData) {
-            const { validationErrors, isValid } = validateInputs(authorData, labels);
+        const { validationErrors, isValid } = validateInputs(authorData, labels);
+        if (isValid) {
 
-            setErrors(validationErrors);
 
-            if (isValid) {
+            if (authorData) {
                 update(authorData.id, authorData);
+                handleSuccess("Editado com sucesso!");
                 navigate('/');
             }
+        } else {
+            setErrors(validationErrors);
+            handleError("Não foi possível editar");
         }
     }
 
