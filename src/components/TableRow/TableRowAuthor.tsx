@@ -1,10 +1,19 @@
-import { TableRowProps } from '../../../types/AuthorTypes';
-import { EditIcon, DeleteIcon } from '../../assets/icons';
-import { deleteItem } from '../../services/AuthorService';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
+import { DeleteIcon, EditIcon } from "../../assets/icons";
+import { TableRowProps } from "../../general";
+import { useApplicationContext } from "../../hooks/useApplicationContext";
+import { deleteItem, getAll } from "../../services/AuthorService";
 
-
-export function TableRowAuthor({ id, index, author, typeOfWork, title, onSuccess, onError }: TableRowProps) {
+export function TableRowAuthor({
+  id,
+  index,
+  author,
+  typeOfWork,
+  title,
+  onSuccess,
+  onError,
+}: TableRowProps) {
+  const { setTableData } = useApplicationContext();
   const navigate = useNavigate();
 
   const handleEdit = () => {
@@ -14,22 +23,40 @@ export function TableRowAuthor({ id, index, author, typeOfWork, title, onSuccess
   const handleDelete = () => {
     try {
       deleteItem(id);
+
+      const currentData = getAll();
+      setTableData(currentData);
       onSuccess("Item deletado com sucesso!");
     } catch (error) {
+      console.log(error);
       onError("Erro ao deletar o item.");
     }
   };
 
   return (
     <tr className="table__row" role="row" tabIndex={index}>
-      <td className="table__cell" role="cell">{author}</td>
-      <td className="table__cell" role="cell">{typeOfWork}</td>
-      <td className="table__cell" role="cell">{title}</td>
       <td className="table__cell" role="cell">
-        <button className="table__btn btn-edit" title="Editar" onClick={handleEdit}>
+        {author}
+      </td>
+      <td className="table__cell" role="cell">
+        {typeOfWork}
+      </td>
+      <td className="table__cell" role="cell">
+        {title}
+      </td>
+      <td className="table__cell" role="cell">
+        <button
+          className="table__btn btn-edit"
+          title="Editar"
+          onClick={handleEdit}
+        >
           <EditIcon />
         </button>
-        <button className="table__btn btn-delete" title="Excluir" onClick={handleDelete}>
+        <button
+          className="table__btn btn-delete"
+          title="Excluir"
+          onClick={handleDelete}
+        >
           <DeleteIcon />
         </button>
       </td>

@@ -1,39 +1,24 @@
-import { useEffect, useState } from 'react'
-import { AuthorForm } from './components/Form/AuthorForm'
-import Table from './components/Table'
-import { ApplicationContextProvider } from './context/ContextManager'
-import { getAll } from './services/AuthorService';
-import { Author } from '../types/AuthorTypes';
-import { EditAuthorForm } from './components/Form/EditAuthorForm';
-import ErrorBoundary from './components/ErrorBoundary';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-
+import { Toaster } from "sonner";
+import ErrorBoundary from "./components/ErrorBoundary";
+import { RoutesWrapper } from "./routes";
 
 function App() {
-  const [tableData, setTableData] = useState<Author[] | null>(null);
-
-  useEffect(() => {
-    const authors = getAll();
-    setTableData(authors);
-    return () => { };
-  }, []);
-
-
   return (
-    <ApplicationContextProvider tableData={tableData}>
-      <div className='tableMain'>
-        <ErrorBoundary>
-          <Router>
-            <Routes>
-              <Route path="/" element={<Table />} />
-              <Route path="/cadastro" element={<AuthorForm />} />
-              <Route path="/editar/:id" element={<EditAuthorForm />} />
-            </Routes>
-          </Router>
-        </ErrorBoundary>
-      </div>
-    </ApplicationContextProvider>
-  )
+    <div className="tableMain">
+      <ErrorBoundary>
+        <RoutesWrapper />
+      </ErrorBoundary>
+      <Toaster
+        position="top-right"
+        toastOptions={{
+          classNames: {
+            success: "toast-success",
+            error: "toast-error",
+          },
+        }}
+      />
+    </div>
+  );
 }
 
 export default App

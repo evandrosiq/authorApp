@@ -1,29 +1,36 @@
-import { createContext, useContext, useState, useEffect } from 'react';
-import { ApplicationContextProviderProps, ApplicationContextType, Author } from '../../types/AuthorTypes';
+import { createContext, useEffect, useMemo, useState } from "react";
+import { useLocation } from "react-router-dom";
+import {
+  ApplicationContextProviderProps,
+  ApplicationContextType,
+  Author,
+} from "../general";
+import { getAll } from "../services/AuthorService";
 
+export const ApplicationContext = createContext<
+  ApplicationContextType | undefined
+>(undefined);
 
-const ApplicationContext = createContext<ApplicationContextType | undefined>(undefined);
+export const ApplicationContextProvider = ({
+  children,
+}: ApplicationContextProviderProps) => {
+  const location = useLocation();
+  const [tableContext, setTableContext] = useState<Author[] | null>(null);
 
-export const useApplicationContext = () => {
-    const context = useContext(ApplicationContext);
+  const allItems = useMemo(() => {
+    return getAll() ?? [];
+  }, [location.pathname]);
 
-    if (!context) {
-        throw new Error('useApplicationContext deve ser usado dentro de um ApplicationContextProvider');
-    }
+  useEffect(() => {
+    const authors = allItems;
+    setTableContext(authors);
+  }, [allItems]);
 
-    return context;
-};
-
-export const ApplicationContextProvider = ({ children, tableData }: ApplicationContextProviderProps) => {
-    const [tableContext, setTableContext] = useState<Author[] | null>(tableData);
-
-    useEffect(() => {
-        setTableContext(tableData);
-    }, [tableData]);
-
-    return (
-        <ApplicationContext.Provider value={{ tableData: tableContext }}>
-            {children}
-        </ApplicationContext.Provider>
-    );
+  return (
+    <ApplicationContext.Provider
+      value={{ tableData: tableContext, setTableData: setTableContext }}
+    >
+      {children}
+    </ApplicationContext.Provider>
+  );
 };

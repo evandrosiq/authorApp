@@ -1,29 +1,12 @@
-import { useState } from 'react';
-import { TableRowAuthor } from "../TableRow/TableRowAuthor";
-import { Author, AuthorDataTableProps } from '../../../types/AuthorTypes';
-
-
-
-
+import { Author, AuthorDataTableProps } from "../../src/general";
+import { useAuthorActions } from "../../src/hooks/useAuthorActions";
+import { TableRowAuthor } from "../components/TableRow/TableRowAuthor";
 
 export function AuthorDataTable({ tableData }: AuthorDataTableProps) {
-  const [message, setMessage] = useState<string | null>(null);
-
-  function handleSuccess(message: string) {
-    setMessage(message);
-    console.log("SUCCESS ===> ", message);
-
-  }
-
-  function handleError(message: string) {
-    setMessage(message);
-    console.log("ERROR ===> ", message);
-  }
-
-
+  const { handleError, handleSuccess } = useAuthorActions();
 
   return (
-    <tbody className='table__data-table'>
+    <tbody className="table__data-table">
       {tableData && tableData.length > 0 ? (
         tableData.map((item: Author, index: number) => (
           <TableRowAuthor
@@ -42,7 +25,6 @@ export function AuthorDataTable({ tableData }: AuthorDataTableProps) {
           <td>Não há dados</td>
         </tr>
       )}
-      {/* {message && <tr className="message">{message}</tr>} */}
     </tbody>
   );
 }
