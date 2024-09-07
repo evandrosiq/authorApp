@@ -1,0 +1,24 @@
+
+.toast-success {
+    background-color: white;
+    padding: 8px;
+    height: 40px;
+    color: #252525;
+    border: 1.5px solid #15BC60;
+
+    svg {
+        color: #15BC60;
+    }
+}
+
+.toast-error {
+    background-color: white;
+    padding: 8px;
+    height: 40px;
+    color: #252525;
+    border: 1.5px solid #EF4444;
+
+    svg {
+        color: #EF4444;
+    }
+}
