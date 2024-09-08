@@ -16,8 +16,6 @@ export function EditIcon() {
 export function DeleteIcon() {
     return (
         <svg width="16px" height="16px" viewBox="-3 0 32 32" version="1.1" >
-
-            <title>trash</title>
             <desc>Created with Sketch Beta.</desc>
             <defs>
 

@@ -58,6 +58,14 @@
         }
     }
 
+    svg {
+        transition: filter 0.2s ease;
+        &:hover {
+            transform: scale(1.1);
+        }
+    }
+
+
     &__img-content {
         display: flex;
         justify-content: center;

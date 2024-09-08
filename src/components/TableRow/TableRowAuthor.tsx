@@ -49,6 +49,7 @@ export function TableRowAuthor({
           className="table__btn btn-edit"
           title="Editar"
           onClick={handleEdit}
+          aria-placeholder="Editar"
         >
           <EditIcon />
         </button>
@@ -56,6 +57,7 @@ export function TableRowAuthor({
           className="table__btn btn-delete"
           title="Excluir"
           onClick={handleDelete}
+          aria-placeholder="Deletar"
         >
           <DeleteIcon />
         </button>
