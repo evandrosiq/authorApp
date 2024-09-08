@@ -1,8 +1,8 @@
-import { Author, AuthorDataTableProps } from "../general";
+import { Author, DataTableProps } from "../general";
 import { useAuthorActions } from "../hooks/useAuthorActions";
 import { TableRow } from "./TableRow";
 
-export function AuthorDataTable({ tableData }: AuthorDataTableProps) {
+export function DataTable({ tableData }: DataTableProps) {
   const { handleError, handleSuccess } = useAuthorActions();
 
   return (

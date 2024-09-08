@@ -20,7 +20,7 @@ export interface ComboboxProps {
   defaultValue?: Option;
 }
 
-export interface AuthorDataTableProps {
+export interface DataTableProps {
   tableData: Author[] | null;
 }
 

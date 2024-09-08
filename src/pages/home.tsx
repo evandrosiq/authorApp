@@ -1,4 +1,4 @@
-import { AuthorDataTable } from "../components/DataTable";
+import { DataTable } from "../components/DataTable";
 import { Footer } from "../components/Footer";
 import { Header } from "../components/Header";
 import { useApplicationContext } from "../hooks/useApplicationContext";
@@ -9,7 +9,7 @@ export function HomePage(): React.ReactElement {
   return (
     <table className="table">
       <Header />
-      <AuthorDataTable tableData={tableData} />
+      <DataTable tableData={tableData} />
       <Footer />
     </table>
   );
