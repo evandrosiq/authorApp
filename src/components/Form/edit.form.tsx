@@ -62,8 +62,6 @@ export function EditAuthorForm() {
 
         const { validationErrors, isValid } = validateInputs(authorData, labels);
         if (isValid) {
-
-
             if (authorData) {
                 update(authorData.id, authorData);
                 handleSuccess("Editado com sucesso!");

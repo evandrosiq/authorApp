@@ -16,8 +16,11 @@ export function validateInputs(inputData: { [key: string]: string }, labels: Val
   };
   let isValid = true;
 
+  console.log("IMPUT DATA ===> ", inputData);
+  
   for (const key in inputData) {
-    if (inputData[key] && inputData[key].trim() === '') {
+    const value = inputData[key];
+    if (typeof value === 'string' && value.trim() === '') {
       const label = labels[key] || key;
       validationErrors[key as keyof ValidationErrors] = `Por favor, insira um ${label} válido.`;
       isValid = false;
