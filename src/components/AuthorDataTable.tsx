@@ -22,7 +22,11 @@ export function AuthorDataTable({ tableData }: AuthorDataTableProps) {
         ))
       ) : (
         <tr>
-          <td>Não há dados</td>
+          <td>
+            <div className="table__img-content">
+              <img src="src/assets/no-result-data-not-found-vetor.jpg" alt="Não há dados" />
+            </div>
+          </td>
         </tr>
       )}
     </tbody>

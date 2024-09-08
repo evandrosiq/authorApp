@@ -58,4 +58,13 @@
         }
     }
 
+    &__img-content {
+        display: flex;
+        justify-content: center;
+
+        img {
+            max-width: 50%;
+        }
+    }
+
 }
