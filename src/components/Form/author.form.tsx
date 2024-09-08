@@ -1,20 +1,22 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuthorActions } from "../../hooks/useAuthorActions";
-import { create } from "../../services/AuthorService";
+import { create, getAll } from "../../services/AuthorService";
 import { validateInputs } from "../../validation/validateInputs";
 import { Combobox } from "../Combobox/Combobox";
 import { InputField } from "../InputField/InputField";
 
 export function AuthorForm() {
   const { handleError, handleSuccess } = useAuthorActions();
-  const [currentIndex, setCurrentIndex] = useState(0);
+  const navigate = useNavigate();
 
   const typeOfWorkOptions = [
     { value: "obra", label: "Obra" },
     { value: "fonograma", label: "Fonograma" },
     { value: "potpourri", label: "Pot-pourri" },
   ];
+
+  const [currentIndex, setCurrentIndex] = useState(0);
 
   const [newItem, setNewItem] = useState({
     title: "",
@@ -27,6 +29,14 @@ export function AuthorForm() {
     typeOfWork: "",
     author: "",
   });
+
+  useEffect(() => {
+    const items = getAll();
+    if (items && items.length > 0) {
+      const maxIndex = Math.max(...items.map((item: { index: number }) => item.index));
+      setCurrentIndex(maxIndex + 1);
+    }
+  }, []);
 
   function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
     const { name, value } = event.target;
@@ -71,8 +81,6 @@ export function AuthorForm() {
       handleError("Não foi possível realizar cadastro");
     }
   }
-
-  const navigate = useNavigate();
 
   function handleNavigateToList() {
     navigate("/");
