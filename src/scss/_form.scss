@@ -40,6 +40,11 @@
             outline-color: $orange;
         }
 
+        input::placeholder {
+            color: $light-gray;
+            font-family: $font-family;
+        }
+
         span {
             font-family: $font-family;
             margin: 4px 0 0 8px;

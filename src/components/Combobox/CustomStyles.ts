@@ -1,11 +1,10 @@
 
-
 export const customStyles = {
     control: (provided: any, state:any) => ({
         ...provided,
         border: '1px solid #f08080',
         borderRadius: '10px',
-        width: 180,
+        width: 180,        
         boxShadow: state.isFocused ? '0 0 0 1px #ff7f50' : 'none', 
         borderColor: state.isFocused ? '#ff7f50' : provided.borderColor, 
         '&:hover': {
@@ -67,5 +66,9 @@ export const customStyles = {
         width: '25px', 
         height: '36px',
 
+    }),
+    singleValue: (provided: any) => ({
+        ...provided,
+        color: '#707070',
     }),
 };

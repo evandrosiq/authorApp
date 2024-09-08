@@ -70,6 +70,7 @@ export function EditAuthorForm() {
           id="title"
           label="Título"
           name="title"
+          placeholder='Ex.: The Last In Line'
           value={formData.title}
           onChange={handleChange}
           errorMessage={errors.title}
@@ -87,6 +88,7 @@ export function EditAuthorForm() {
           id="author"
           label="Autor"
           name="author"
+          placeholder='Ex.: Ronnie James Dio'
           value={formData.author}
           onChange={handleChange}
           errorMessage={errors.author}

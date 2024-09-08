@@ -59,6 +59,7 @@ export function AuthorForm() {
           id="title"
           label="Título"
           name="title"
+          placeholder="Ex.: So What"
           value={formData.title}
           onChange={handleChange}
           errorMessage={errors.title}
@@ -73,6 +74,7 @@ export function AuthorForm() {
           id="author"
           label="Autor"
           name="author"
+          placeholder="Ex.: Miles Davis"
           value={formData.author}
           onChange={handleChange}
           errorMessage={errors.author}
