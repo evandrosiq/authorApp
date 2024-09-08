@@ -28,7 +28,6 @@ export function TableRowAuthor({
       setTableData(currentData);
       onSuccess("Item deletado com sucesso!");
     } catch (error) {
-      console.log(error);
       onError("Erro ao deletar o item.");
     }
   };

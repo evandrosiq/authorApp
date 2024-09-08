@@ -15,8 +15,6 @@ export function validateInputs(inputData: { [key: string]: string }, labels: Val
     author: ''
   };
   let isValid = true;
-
-  console.log("IMPUT DATA ===> ", inputData);
   
   for (const key in inputData) {
     const value = inputData[key];

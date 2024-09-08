@@ -3,7 +3,6 @@ import { Author } from "../general";
 export function getAll(): Author[] {
   try {
     const storedItems = localStorage.getItem("items");
-    console.log("GetAll ===> ", storedItems);
     return storedItems ? JSON.parse(storedItems) : [];
   } catch (error) {
     console.error("Failed to get all items:", error);
@@ -16,7 +15,6 @@ export function create(item: Author): void {
     const items = getAll();
     items.push(item);
     localStorage.setItem("items", JSON.stringify(items));
-    console.log("Create ===> ", items);
   } catch (error) {
     console.error("Failed to create item:", error);
   }
@@ -27,7 +25,6 @@ export function getById(id: string): Author | null {
     const items = getAll();
     return (
       items.find(function (item) {
-        console.log("GetById ===> ", item);
         return item.id === id;
       }) || null
     );
@@ -53,7 +50,6 @@ export function update(id: string, authorData: Partial<Author>): void {
       if (index !== -1) {
         items[index] = updatedItem;
         localStorage.setItem("items", JSON.stringify(items));
-        console.log("Update ===> ", items[index]);
       }
     }
   } catch (error) {
@@ -67,7 +63,6 @@ export function deleteItem(id: string): void {
     const filteredItems = items.filter(function (item) {
       return item.id !== id;
     });
-    console.log("Delete ===> ", filteredItems);
     localStorage.setItem("items", JSON.stringify(filteredItems));
   } catch (error) {
     console.error("Failed to delete item:", error);
