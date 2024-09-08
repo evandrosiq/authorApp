@@ -1,4 +1,4 @@
-import { AuthorDataTable } from "../components/AuthorDataTable";
+import { AuthorDataTable } from "../components/DataTable";
 import { Footer } from "../components/Footer";
 import { Header } from "../components/Header";
 import { useApplicationContext } from "../hooks/useApplicationContext";

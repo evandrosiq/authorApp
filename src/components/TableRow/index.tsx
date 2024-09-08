@@ -4,7 +4,7 @@ import { TableRowProps } from "../../general";
 import { useApplicationContext } from "../../hooks/useApplicationContext";
 import { deleteItem, getAll } from "../../services/AuthorService";
 
-export function TableRowAuthor({
+export function TableRow({
   id,
   index,
   author,

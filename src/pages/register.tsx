@@ -1,5 +1,5 @@
-import { AuthorForm } from "../components/Form/AuthorForm/author.form";
+import { RegisterForm } from "../components/Form/RegisterForm/register.form";
 
 export function RegisterPage(): React.ReactElement {
-  return <AuthorForm />;
+  return <RegisterForm />;
 }

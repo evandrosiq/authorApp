@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { getById } from '../../../services/AuthorService';
-import { InputField } from '../../InputField/InputField';
-import { Combobox } from '../../Combobox/Combobox';
+import { InputField } from '../../InputField';
+import { Combobox } from '../../Combobox';
 import { useFormHandler } from '../../../hooks/useFormHandler';
 import { Author } from '../../../general';
 

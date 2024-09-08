@@ -1,11 +1,11 @@
 import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { getAll } from "../../../services/AuthorService";
-import { Combobox } from "../../Combobox/Combobox";
-import { InputField } from "../../InputField/InputField";
+import { Combobox } from "../../Combobox";
+import { InputField } from "../../InputField";
 import { useFormHandler } from "../../../hooks/useFormHandler";
 
-export function AuthorForm() {
+export function RegisterForm() {
   const navigate = useNavigate();
   const typeOfWorkOptions = [
     { value: "obra", label: "Obra" },
