@@ -9,9 +9,16 @@ import { InputField } from "../InputField/InputField";
 export function AuthorForm() {
   const { handleError, handleSuccess } = useAuthorActions();
   const [currentIndex, setCurrentIndex] = useState(0);
+
+  const typeOfWorkOptions = [
+    { value: "obra", label: "Obra" },
+    { value: "fonograma", label: "Fonograma" },
+    { value: "potpourri", label: "Pot-pourri" },
+  ];
+
   const [newItem, setNewItem] = useState({
     title: "",
-    typeOfWork: "",
+    typeOfWork: typeOfWorkOptions[0].value,
     author: "",
   });
 
@@ -56,7 +63,7 @@ export function AuthorForm() {
         index: currentIndex,
       };
       create(item);
-      setNewItem({ title: "", typeOfWork: "", author: "" });
+      setNewItem({ title: "", typeOfWork: typeOfWorkOptions[0].value, author: "" });
       setCurrentIndex((prevIndex) => prevIndex + 1);
       handleSuccess("Cadastrado com sucesso!");
     } else {

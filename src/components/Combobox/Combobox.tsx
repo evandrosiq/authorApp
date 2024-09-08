@@ -11,7 +11,7 @@ export function Combobox({ onChange, defaultValue }: ComboboxProps) {
   ];
 
   const [selectedOption, setSelectedOption] = useState<Option | null>(
-    defaultValue || options[0]
+    options[0] || defaultValue
   );
 
   function handleChange(selectedOption: SingleValue<Option> | null) {
