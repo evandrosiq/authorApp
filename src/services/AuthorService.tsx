@@ -68,3 +68,23 @@ export function deleteItem(id: string): void {
     console.error("Failed to delete item:", error);
   }
 }
+
+export function getLastModifiedDate() {
+  const items = getAll();
+
+  if (!items || items.length === 0) {
+      return null;
+  }
+
+  const lastModifiedItem = items.reduce((latest, item) => {
+      const itemLastModify = item.lastModify ? new Date(item.lastModify) : null;
+      const latestLastModify = latest && latest.lastModify ? new Date(latest.lastModify) : null;
+
+      if (!latest || (itemLastModify && (!latestLastModify || itemLastModify > latestLastModify))) {
+          return item;
+      }
+      return latest;
+  }, null as { lastModify?: string } | null);
+
+  return lastModifiedItem ? lastModifiedItem.lastModify : null;
+}
