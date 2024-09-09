@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { create, update } from '../services/AuthorService';
-import { validateInputs } from '../validation/validateInputs';
 import { useAuthorActions } from './useAuthorActions';
+import { validateInputs } from '@/validation/validateInputs';
+import { create, update } from '@/services/AuthorService';
 
 interface UseFormHandlerProps {
   initialData: { id?: string; title: string; typeOfWork: string; author: string };

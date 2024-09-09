@@ -1,4 +1,4 @@
-import { InputProps } from "../../general";
+import { InputProps } from "@/general";
 
 export function InputField({ id, label, name, value, onChange, errorMessage, placeholder }: InputProps) {
   return (

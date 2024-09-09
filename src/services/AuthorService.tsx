@@ -1,4 +1,5 @@
-import { Author } from "../general";
+import { Author } from "@/general";
+
 
 export function getAll(): Author[] {
   try {

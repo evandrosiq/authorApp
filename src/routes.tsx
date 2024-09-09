@@ -2,6 +2,7 @@ import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 import { ApplicationContextProvider } from "./context/ContextManager";
 import { EditPage, HomePage, RegisterPage } from "./pages";
 
+
 export function RoutesWrapper(): React.ReactElement {
   return (
     <Router>

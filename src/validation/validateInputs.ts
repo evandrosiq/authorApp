@@ -3,19 +3,19 @@ interface ValidationErrors {
   typeOfWork: string;
   author: string;
 }
+const labels = {
+  title: "Título",
+  typeOfWork: "Tipo de Obra",
+  author: "Autor",
+};
 
 export function validateInputs(inputData: { [key: string]: string }): { validationErrors: ValidationErrors, isValid: boolean } {
-  const labels = {
-    title: "Título",
-    typeOfWork: "Tipo de Obra",
-    author: "Autor",
-  };
-  
-  let validationErrors: ValidationErrors = {
+  const validationErrors: ValidationErrors = {
     title: '',
     typeOfWork: '',
     author: ''
   };
+  
   let isValid = true;
   
   for (const key in inputData) {

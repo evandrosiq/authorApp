@@ -1,9 +1,10 @@
-import React, { useEffect } from "react";
+import { Combobox } from "@/components/Combobox";
+import { InputField } from "@/components/InputField";
+import { useFormHandler } from "@/hooks/useFormHandler";
+import { getAll } from "@/services/AuthorService";
+import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { getAll } from "../../../services/AuthorService";
-import { Combobox } from "../../Combobox";
-import { InputField } from "../../InputField";
-import { useFormHandler } from "../../../hooks/useFormHandler";
+
 
 export function RegisterForm() {
   const navigate = useNavigate();

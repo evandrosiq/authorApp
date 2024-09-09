@@ -1,9 +1,10 @@
 import React, { useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { getById } from '../../../services/AuthorService';
-import { InputField } from '../../InputField';
-import { Combobox } from '../../Combobox';
-import { useFormHandler } from '../../../hooks/useFormHandler';
+import { getById } from '@/services/AuthorService';
+import { useFormHandler } from '@/hooks/useFormHandler';
+import { InputField } from '@/components/InputField';
+import { Combobox } from '@/components/Combobox';
+
 
 export function EditAuthorForm() {
   const { id } = useParams<{ id: string }>();

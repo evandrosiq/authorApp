@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { getLastModifiedDate } from "../../services/AuthorService";
+import { getLastModifiedDate } from "@/services/AuthorService";
 
 export function Footer() {
     const navigate = useNavigate();

@@ -1,7 +1,8 @@
-import { DataTable } from "../components/DataTable";
-import { Footer } from "../components/Footer";
-import { Header } from "../components/Header";
-import { useApplicationContext } from "../hooks/useApplicationContext";
+import { DataTable } from "@/components/DataTable";
+import { Footer } from "@/components/Footer";
+import { Header } from "@/components/Header";
+import { useApplicationContext } from "@/hooks/useApplicationContext";
+
 
 export function HomePage(): React.ReactElement {
   const { tableData } = useApplicationContext();
