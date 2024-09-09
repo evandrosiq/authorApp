@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { create, update } from '../services/AuthorService';
-import { useAuthorValidation } from './useAuthorInputValidation';
+import { validateInputs } from '../validation/validateInputs';
 import { useAuthorActions } from './useAuthorActions';
 
 interface UseFormHandlerProps {
@@ -21,7 +21,7 @@ export function useFormHandler({
   function handleSubmit(event: React.FormEvent) {
     event.preventDefault();
 
-    const { isValid, validationErrors } = useAuthorValidation(formData);
+    const { isValid, validationErrors } = validateInputs(formData);
 
     if (isValid) {
       if (formData.id) {

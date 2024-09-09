@@ -4,11 +4,13 @@ interface ValidationErrors {
   author: string;
 }
 
-interface ValidationLabels {
-  [key: string]: string;
-}
-
-export function ValidateInputs(inputData: { [key: string]: string }, labels: ValidationLabels): { validationErrors: ValidationErrors, isValid: boolean } {
+export function validateInputs(inputData: { [key: string]: string }): { validationErrors: ValidationErrors, isValid: boolean } {
+  const labels = {
+    title: "Título",
+    typeOfWork: "Tipo de Obra",
+    author: "Autor",
+  };
+  
   let validationErrors: ValidationErrors = {
     title: '',
     typeOfWork: '',
@@ -19,7 +21,7 @@ export function ValidateInputs(inputData: { [key: string]: string }, labels: Val
   for (const key in inputData) {
     const value = inputData[key];
     if (typeof value === 'string' && value.trim() === '') {
-      const label = labels[key] || key;
+      const label = labels[key as keyof ValidationErrors]  || key;
       validationErrors[key as keyof ValidationErrors] = `Por favor, insira um ${label} válido.`;
       isValid = false;
     }

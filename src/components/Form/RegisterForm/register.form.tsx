@@ -21,35 +21,37 @@ export function RegisterForm() {
 
   const { formData, setFormData, errors, handleSubmit } = useFormHandler({
     initialData,
-    isEditMode: false, 
   });
 
   useEffect(() => {
+    updateIndex();
+  }, []);
+
+  const updateIndex = () => {
     const items = getAll();
-    if (items && items.length > 0) {
+    if (items) {
       const maxIndex = Math.max(...items.map((item: { index: number }) => item.index));
       setFormData((prevData) => ({ ...prevData, index: maxIndex + 1 }));
     }
-  }, [setFormData]);
+  };
 
-  function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
+  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
     setFormData((prevData) => ({ ...prevData, [name]: value }));
-  }
+  };
 
-  function handleComboboxChange(selectedOption: { value: string; label: string } | null) {
+  const handleComboboxChange = (selectedOption: { value: string; label: string } | null) => {
     if (selectedOption) {
       setFormData((prevData) => ({
         ...prevData,
         typeOfWork: selectedOption.value,
       }));
     }
-  }
+  };
 
-  function handleNavigateToList() {
+  const handleNavigateToList = () => {
     navigate("/");
-  }
-
+  };
 
   return (
     <div className="form">
@@ -61,7 +63,7 @@ export function RegisterForm() {
           name="title"
           placeholder="Ex.: So What"
           value={formData.title}
-          onChange={handleChange}
+          onChange={handleInputChange}
           errorMessage={errors.title}
         />
 
@@ -76,7 +78,7 @@ export function RegisterForm() {
           name="author"
           placeholder="Ex.: Miles Davis"
           value={formData.author}
-          onChange={handleChange}
+          onChange={handleInputChange}
           errorMessage={errors.author}
         />
         <div className="form__content-button">
