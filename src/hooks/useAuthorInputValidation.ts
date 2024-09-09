@@ -1,4 +1,4 @@
-import { validateInputs } from "../validation/validateInputs";
+import { ValidateInputs } from "../validation/ValidateInputs";
 
 export function useAuthorValidation(newItem: { [key: string]: string }) {
   const labels = {
@@ -7,5 +7,5 @@ export function useAuthorValidation(newItem: { [key: string]: string }) {
     author: "Autor",
   };
 
-  return validateInputs(newItem, labels);
+  return ValidateInputs(newItem, labels);
 }

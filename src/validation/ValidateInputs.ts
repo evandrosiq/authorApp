@@ -8,7 +8,7 @@ interface ValidationLabels {
   [key: string]: string;
 }
 
-export function validateInputs(inputData: { [key: string]: string }, labels: ValidationLabels): { validationErrors: ValidationErrors, isValid: boolean } {
+export function ValidateInputs(inputData: { [key: string]: string }, labels: ValidationLabels): { validationErrors: ValidationErrors, isValid: boolean } {
   let validationErrors: ValidationErrors = {
     title: '',
     typeOfWork: '',
