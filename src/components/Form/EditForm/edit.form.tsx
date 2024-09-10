@@ -1,83 +1,113 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { getById } from '@/services/AuthorService';
-import { useFormHandler } from '@/hooks/useFormHandler';
+import { getById, update } from '@/services/AuthorService';
 import { InputField } from '@/components/InputField';
-import { Combobox } from '@/components/Combobox';
+import { Combobox, Option } from '@/components/Combobox';
+import { useForm, Controller, SubmitHandler } from 'react-hook-form';
+import { typeOfWorkOptions } from '@/constants/typeOfWork.options';
+import { Author } from '@/general';
+import { useAuthorActions } from '@/hooks/useAuthorActions';
 
+interface DataForm {
+  title: string;
+  author: string;
+  typeOfWork: Option;
+}
 
 export function EditAuthorForm() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
-
-  const { formData, setFormData, errors, handleSubmit } = useFormHandler({
-    initialData: { id: '', title: '', typeOfWork: '', author: '' },
-  });
+  const actions = useAuthorActions();
+  const { handleSubmit, control, reset } = useForm<DataForm>();
 
   useEffect(() => {
     if (id) {
       try {
         const author = getById(id);
         if (author) {
-          setFormData(author);
+          reset({
+            title: author.title,
+            author: author.author,
+            typeOfWork: typeOfWorkOptions.find(option => option.value === author.typeOfWork.value) || typeOfWorkOptions[0]
+          });
         }
       } catch (error) {
         console.error("Erro ao buscar autor:", error);
       }
     }
-  }, [id, setFormData]);
+  }, []);
 
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = event.target;
-    setFormData((prevData) => ({ ...prevData, [name]: value }));
-  };
+  const onSubmit: SubmitHandler<DataForm> = (values) => {
+    const updatedAuthor = {
+      ...values,
+      id: id!,
+      lastModify: new Date().toISOString(),
+    } satisfies Partial<Author>;
 
-  const handleComboboxChange = (selectedOption: { value: string; label: string } | null) => {
-    if (selectedOption) {
-      setFormData((prevData) => ({ ...prevData, typeOfWork: selectedOption.value }));
-    }
+    update({
+      id: id!,
+      authorData: updatedAuthor,
+      callback: () => {
+        actions.handleSuccess("Editado com sucesso!");
+        navigate('/');
+      },
+      callbackError: () => actions.handleError("Não foi possível editar!"),
+    });
   };
 
   const handleCancel = () => {
     navigate('/');
   };
 
-  const options = [
-    { value: 'obra', label: 'Obra' },
-    { value: 'fonograma', label: 'Fonograma' },
-    { value: 'potpourri', label: 'Pot-pourri' }
-  ];
-
   return (
     <div className='form'>
       <h2 className='form__title'>Editar Autor</h2>
-      <form className='form__wrapper' onSubmit={handleSubmit}>
-        <InputField
-          id="title"
-          label="Título"
+      <form className='form__wrapper' onSubmit={handleSubmit(onSubmit)}>
+        <Controller
           name="title"
-          placeholder='Ex.: The Last In Line'
-          value={formData.title}
-          onChange={handleChange}
-          errorMessage={errors.title}
+          control={control}
+          rules={{ required: "Campo Obrigatório" }}
+          render={({ field, fieldState }) => (
+            <InputField
+              id="title"
+              label="Título"
+              placeholder="Ex.: The Last In Line"
+              errorMessage={fieldState.error?.message}
+              {...field}
+            />
+          )}
         />
 
-        <div className='form__input-content'>
-          <label htmlFor="typeOfWork">Tipo</label>
-          <Combobox
-            onChange={handleComboboxChange}
-            defaultValue={options.find(option => option.value === formData.typeOfWork)}
-          />
-        </div>
+        <Controller
+          control={control}
+          name="typeOfWork"
+          render={({ field }) => (
+            <div className="form__input-content">
+              <label htmlFor="typeOfWork">Tipo</label>
+              <Combobox
+                onChange={(newValue) => field.onChange(newValue)}
+                name="typeOfWork"
+                options={typeOfWorkOptions}
+                defaultValue={field.value}
+                value={field.value}
+              />
+            </div>
+          )}
+        />
 
-        <InputField
-          id="author"
-          label="Autor"
+        <Controller
           name="author"
-          placeholder='Ex.: Ronnie James Dio'
-          value={formData.author}
-          onChange={handleChange}
-          errorMessage={errors.author}
+          control={control}
+          rules={{ required: "Campo Obrigatório" }}
+          render={({ field, fieldState }) => (
+            <InputField
+              id="author"
+              label="Autor"
+              placeholder="Ex.: Ronnie James Dio"
+              errorMessage={fieldState.error?.message}
+              {...field}
+            />
+          )}
         />
 
         <div className='form__content-button'>

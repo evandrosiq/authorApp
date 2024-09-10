@@ -38,7 +38,8 @@ export function getById(id: string): Author | null {
   }
 }
 
-export function update(id: string, authorData: Partial<Author>): void {
+export function update(props: { id: string; authorData: Partial<Author>; callback: () => void; callbackError: () => void }): void {
+  const { id, authorData, callback, callbackError } = props;
   try {
     const item = getById(id);
     if (item) {
@@ -54,10 +55,12 @@ export function update(id: string, authorData: Partial<Author>): void {
       if (index !== -1) {
         items[index] = updatedItem;
         localStorage.setItem("items", JSON.stringify(items));
+        callback()
       }
     }
   } catch (error) {
     console.error("Failed to update item:", error);
+    callbackError()
   }
 }
 
