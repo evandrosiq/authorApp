@@ -18,10 +18,10 @@ export function useFormHandler({
   const navigate = useNavigate();
   const { handleSuccess, handleError } = useAuthorActions();
 
+  const { isValid, validationErrors } = useAuthorValidation(formData);
   function handleSubmit(event: React.FormEvent) {
     event.preventDefault();
 
-    const { isValid, validationErrors } = useAuthorValidation(formData);
 
     if (isValid) {
       if (formData.id) {

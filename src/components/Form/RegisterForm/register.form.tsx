@@ -20,8 +20,7 @@ export function RegisterForm() {
   };
 
   const { formData, setFormData, errors, handleSubmit } = useFormHandler({
-    initialData,
-    isEditMode: false, 
+    initialData
   });
 
   useEffect(() => {
