@@ -1,30 +1,35 @@
-import { useState } from "react";
 import Select, { SingleValue } from "react-select";
-import { ComboboxProps, Option } from "../../general";
 import { customStyles } from "./CustomStyles";
 
-export function Combobox({ onChange, defaultValue }: ComboboxProps) {
-  const options = [
-    { value: "obra", label: "Obra" },
-    { value: "fonograma", label: "Fonograma" },
-    { value: "potpourri", label: "Pot-pourri" },
-  ];
 
-  const [selectedOption, setSelectedOption] = useState<Option | null>(
-    options[0] || defaultValue
-  );
+export interface Option {
+  value: string;
+  label: string;
+}
 
-  function handleChange(selectedOption: SingleValue<Option> | null) {
-    setSelectedOption(selectedOption);
-    onChange(selectedOption);
+interface ComboboxProps {
+  onChange?: (newValue: SingleValue<string | Option> | null) => void;
+  defaultValue?: Option;
+  value?: SingleValue<string | Option>,
+  name?: string,
+  options: Option[]
+}
+
+export function Combobox({ onChange, defaultValue, value, name, options }: ComboboxProps) {
+
+  function handleChange(newValue: SingleValue<string | Option>) {
+    if (onChange)
+      onChange(newValue);
   }
 
   return (
     <Select
+      name={name}
       options={options}
       styles={customStyles}
       isSearchable={false}
-      value={defaultValue ?? selectedOption}
+      value={defaultValue ?? value}
+      defaultValue={defaultValue}
       onChange={handleChange}
     />
   );

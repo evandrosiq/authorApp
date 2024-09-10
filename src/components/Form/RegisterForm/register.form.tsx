@@ -1,54 +1,22 @@
-import { Combobox } from "@/components/Combobox";
+import { Combobox, Option } from "@/components/Combobox";
 import { InputField } from "@/components/InputField";
-import { useFormHandler } from "@/hooks/useFormHandler";
-import { getAll } from "@/services/AuthorService";
-import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { useForm, Controller, SubmitHandler } from 'react-hook-form'
+import { typeOfWorkOptions } from "@/constants/typeOfWork.options";
 
+interface DataForm {
+  title: string;
+  author: string;
+  typeOfWork: Option;
+}
 
 export function RegisterForm() {
   const navigate = useNavigate();
-  const typeOfWorkOptions = [
-    { value: "obra", label: "Obra" },
-    { value: "fonograma", label: "Fonograma" },
-    { value: "potpourri", label: "Pot-pourri" },
-  ];
+  const { handleSubmit, control } = useForm<DataForm>()
 
-  const initialData = {
-    title: "",
-    typeOfWork: typeOfWorkOptions[0].value,
-    author: "",
-  };
-
-  const { formData, setFormData, errors, handleSubmit } = useFormHandler({
-    initialData,
-  });
-
-  useEffect(() => {
-    updateIndex();
-  }, []);
-
-  const updateIndex = () => {
-    const items = getAll();
-    if (items) {
-      const maxIndex = Math.max(...items.map((item: { index: number }) => item.index));
-      setFormData((prevData) => ({ ...prevData, index: maxIndex + 1 }));
-    }
-  };
-
-  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = event.target;
-    setFormData((prevData) => ({ ...prevData, [name]: value }));
-  };
-
-  const handleComboboxChange = (selectedOption: { value: string; label: string } | null) => {
-    if (selectedOption) {
-      setFormData((prevData) => ({
-        ...prevData,
-        typeOfWork: selectedOption.value,
-      }));
-    }
-  };
+  const onSubmit: SubmitHandler<DataForm> = (values) => {
+    alert(JSON.stringify(values))
+  }
 
   const handleNavigateToList = () => {
     navigate("/");
@@ -57,31 +25,49 @@ export function RegisterForm() {
   return (
     <div className="form">
       <h2 className="form__title">Cadastrar</h2>
-      <form className="form__wrapper" onSubmit={handleSubmit}>
-        <InputField
-          id="title"
-          label="Título"
+      <form className="form__wrapper" onSubmit={handleSubmit(onSubmit)}>
+        <Controller
           name="title"
-          placeholder="Ex.: So What"
-          value={formData.title}
-          onChange={handleInputChange}
-          errorMessage={errors.title}
+          control={control}
+          render={({ field }) => (
+            <InputField
+              id="title"
+              label="Título"
+              placeholder="Ex.: So What"
+              {...field}
+            />
+          )}
         />
 
-        <div className="form__input-content">
-          <label htmlFor="typeOfWork">Tipo</label>
-          <Combobox onChange={handleComboboxChange} />
-        </div>
+        <Controller
+          control={control}
+          name="typeOfWork"
+          render={({ field }) => (
+            <div className="form__input-content">
+              <label htmlFor="typeOfWork">Tipo</label>
+              <Combobox onChange={(newValue) => field.onChange(newValue)}
+                name="typeOfWork"
+                options={typeOfWorkOptions}
+                defaultValue={field.value}
+                value={field.value}
+              />
+            </div>
+          )}
+        />
 
-        <InputField
-          id="author"
-          label="Autor"
+        <Controller
           name="author"
-          placeholder="Ex.: Miles Davis"
-          value={formData.author}
-          onChange={handleInputChange}
-          errorMessage={errors.author}
+          control={control}
+          render={({ field }) => (
+            <InputField
+              id="author"
+              label="Autor"
+              placeholder="Ex.: Miles Davis"
+              {...field}
+            />
+          )}
         />
+
         <div className="form__content-button">
           <button type="submit">Salvar</button>
           <button type="button" onClick={handleNavigateToList}>
