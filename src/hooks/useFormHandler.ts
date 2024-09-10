@@ -5,13 +5,11 @@ import { useAuthorValidation } from './useAuthorInputValidation';
 import { useAuthorActions } from './useAuthorActions';
 
 interface UseFormHandlerProps {
-  isEditMode: boolean;
   initialData: { id?: string; title: string; typeOfWork: string; author: string };
   currentIndex?: number;
 }
 
 export function useFormHandler({
-  isEditMode,
   initialData,
   currentIndex = 0,
 }: UseFormHandlerProps) {
@@ -26,7 +24,7 @@ export function useFormHandler({
     const { isValid, validationErrors } = useAuthorValidation(formData);
 
     if (isValid) {
-      if (isEditMode && formData.id) {
+      if (formData.id) {
         update(formData.id, formData);
         handleSuccess("Editado com sucesso!");
         navigate('/');
@@ -43,7 +41,7 @@ export function useFormHandler({
       }
     } else {
       setErrors(validationErrors);
-      handleError(isEditMode ? "Não foi possível editar" : "Não foi possível realizar cadastro");
+      handleError(formData.id ? "Não foi possível editar" : "Não foi possível realizar cadastro");
     }
   }
 

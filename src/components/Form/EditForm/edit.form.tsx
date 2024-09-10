@@ -15,7 +15,6 @@ export function EditAuthorForm() {
   const [fetchedAuthor, setFetchedAuthor] = useState<Author | null>(null);
 
   const { formData, setFormData, errors, handleSubmit } = useFormHandler({
-    isEditMode: true,
     initialData: { id: '', title: '', typeOfWork: '', author: '' },
   });
 
