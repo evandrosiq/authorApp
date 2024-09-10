@@ -3,6 +3,7 @@ import { InputField } from "@/components/InputField";
 import { useNavigate } from "react-router-dom";
 import { useForm, Controller, SubmitHandler } from 'react-hook-form'
 import { typeOfWorkOptions } from "@/constants/typeOfWork.options";
+import { useEffect } from "react";
 
 interface DataForm {
   title: string;
@@ -12,7 +13,7 @@ interface DataForm {
 
 export function RegisterForm() {
   const navigate = useNavigate();
-  const { handleSubmit, control } = useForm<DataForm>()
+  const { handleSubmit, control, reset } = useForm<DataForm>()
 
   const onSubmit: SubmitHandler<DataForm> = (values) => {
     alert(JSON.stringify(values))
@@ -22,6 +23,12 @@ export function RegisterForm() {
     navigate("/");
   };
 
+  useEffect(() => {
+    reset({
+      typeOfWork: typeOfWorkOptions[0],
+    })
+  }, [])
+
   return (
     <div className="form">
       <h2 className="form__title">Cadastrar</h2>
@@ -29,11 +36,15 @@ export function RegisterForm() {
         <Controller
           name="title"
           control={control}
-          render={({ field }) => (
+          rules={{
+            required: "Campo Obrigatório"
+          }}
+          render={({ field, fieldState }) => (
             <InputField
               id="title"
               label="Título"
               placeholder="Ex.: So What"
+              errorMessage={fieldState.error?.message}
               {...field}
             />
           )}
@@ -48,7 +59,7 @@ export function RegisterForm() {
               <Combobox onChange={(newValue) => field.onChange(newValue)}
                 name="typeOfWork"
                 options={typeOfWorkOptions}
-                defaultValue={field.value}
+                defaultValue={field.value ?? typeOfWorkOptions[0]}
                 value={field.value}
               />
             </div>
@@ -58,11 +69,15 @@ export function RegisterForm() {
         <Controller
           name="author"
           control={control}
-          render={({ field }) => (
+          rules={{
+            required: "Campo Obrigatório"
+          }}
+          render={({ field, fieldState }) => (
             <InputField
               id="author"
               label="Autor"
               placeholder="Ex.: Miles Davis"
+              errorMessage={fieldState.error?.message}
               {...field}
             />
           )}
