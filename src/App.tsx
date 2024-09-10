@@ -2,6 +2,7 @@ import { Toaster } from "sonner";
 import ErrorBoundary from "./components/ErrorBoundary";
 import { RoutesWrapper } from "./routes";
 
+
 function App() {
   return (
     <div className="tableMain">

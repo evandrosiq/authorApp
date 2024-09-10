@@ -1,6 +1,6 @@
-import { Author, DataTableProps } from "../../general";
-import { useAuthorActions } from "../../hooks/useAuthorActions";
-import { TableRow } from "../TableRow";
+import { Author, DataTableProps } from "@/general";
+import { useAuthorActions } from "@/hooks/useAuthorActions";
+import { TableRow } from "@/components/TableRow";
 
 export function DataTable({ tableData }: DataTableProps) {
   const { handleError, handleSuccess } = useAuthorActions();
@@ -14,7 +14,7 @@ export function DataTable({ tableData }: DataTableProps) {
             id={item.id}
             index={index}
             author={item.author}
-            typeOfWork={item.typeOfWork}
+            typeOfWork={item.typeOfWork.label}
             title={item.title}
             onSuccess={handleSuccess}
             onError={handleError}

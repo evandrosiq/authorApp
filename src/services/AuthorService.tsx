@@ -1,4 +1,5 @@
-import { Author } from "../general";
+import { Author } from "@/general";
+
 
 export function getAll(): Author[] {
   try {
@@ -10,13 +11,16 @@ export function getAll(): Author[] {
   }
 }
 
-export function create(item: Author): void {
+export function create(props: { item: Author; callback: () => void; callbackError: () => void }): void {
+  const { item, callback, callbackError } = props;
   try {
     const items = getAll();
     items.push(item);
     localStorage.setItem("items", JSON.stringify(items));
+    callback()
   } catch (error) {
     console.error("Failed to create item:", error);
+    callbackError()
   }
 }
 
@@ -34,7 +38,8 @@ export function getById(id: string): Author | null {
   }
 }
 
-export function update(id: string, authorData: Partial<Author>): void {
+export function update(props: { id: string; authorData: Partial<Author>; callback: () => void; callbackError: () => void }): void {
+  const { id, authorData, callback, callbackError } = props;
   try {
     const item = getById(id);
     if (item) {
@@ -50,10 +55,12 @@ export function update(id: string, authorData: Partial<Author>): void {
       if (index !== -1) {
         items[index] = updatedItem;
         localStorage.setItem("items", JSON.stringify(items));
+        callback()
       }
     }
   } catch (error) {
     console.error("Failed to update item:", error);
+    callbackError()
   }
 }
 
@@ -73,17 +80,17 @@ export function getLastModifiedDate() {
   const items = getAll();
 
   if (!items || items.length === 0) {
-      return null;
+    return null;
   }
 
   const lastModifiedItem = items.reduce((latest, item) => {
-      const itemLastModify = item.lastModify ? new Date(item.lastModify) : null;
-      const latestLastModify = latest && latest.lastModify ? new Date(latest.lastModify) : null;
+    const itemLastModify = item.lastModify ? new Date(item.lastModify) : null;
+    const latestLastModify = latest && latest.lastModify ? new Date(latest.lastModify) : null;
 
-      if (!latest || (itemLastModify && (!latestLastModify || itemLastModify > latestLastModify))) {
-          return item;
-      }
-      return latest;
+    if (!latest || (itemLastModify && (!latestLastModify || itemLastModify > latestLastModify))) {
+      return item;
+    }
+    return latest;
   }, null as { lastModify?: string } | null);
 
   return lastModifiedItem ? lastModifiedItem.lastModify : null;

@@ -1,16 +1,19 @@
-import { InputProps } from "../../general";
+import React from "react";
 
-export function InputField({ id, label, name, value, onChange, errorMessage, placeholder }: InputProps) {
+
+interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
+  label: string;
+  errorMessage?: string;
+}
+
+export function InputField({ id, label, errorMessage, ...rest }: InputProps) {
   return (
     <div className="form__input-content">
       <label htmlFor={id}>{label}</label>
       <input
-        type="text"
         id={id}
-        name={name}
-        value={value}
-        onChange={onChange}
-        placeholder={placeholder}
+        type="text"
+        {...rest}
       />
       {errorMessage && <span className="error">{errorMessage}</span>}
     </div>
