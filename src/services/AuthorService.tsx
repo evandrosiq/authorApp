@@ -11,13 +11,16 @@ export function getAll(): Author[] {
   }
 }
 
-export function create(item: Author): void {
+export function create(props: { item: Author; callback: () => void; callbackError: () => void }): void {
+  const { item, callback, callbackError } = props;
   try {
     const items = getAll();
     items.push(item);
     localStorage.setItem("items", JSON.stringify(items));
+    callback()
   } catch (error) {
     console.error("Failed to create item:", error);
+    callbackError()
   }
 }
 
@@ -74,17 +77,17 @@ export function getLastModifiedDate() {
   const items = getAll();
 
   if (!items || items.length === 0) {
-      return null;
+    return null;
   }
 
   const lastModifiedItem = items.reduce((latest, item) => {
-      const itemLastModify = item.lastModify ? new Date(item.lastModify) : null;
-      const latestLastModify = latest && latest.lastModify ? new Date(latest.lastModify) : null;
+    const itemLastModify = item.lastModify ? new Date(item.lastModify) : null;
+    const latestLastModify = latest && latest.lastModify ? new Date(latest.lastModify) : null;
 
-      if (!latest || (itemLastModify && (!latestLastModify || itemLastModify > latestLastModify))) {
-          return item;
-      }
-      return latest;
+    if (!latest || (itemLastModify && (!latestLastModify || itemLastModify > latestLastModify))) {
+      return item;
+    }
+    return latest;
   }, null as { lastModify?: string } | null);
 
   return lastModifiedItem ? lastModifiedItem.lastModify : null;

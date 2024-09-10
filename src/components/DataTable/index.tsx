@@ -14,7 +14,7 @@ export function DataTable({ tableData }: DataTableProps) {
             id={item.id}
             index={index}
             author={item.author}
-            typeOfWork={item.typeOfWork}
+            typeOfWork={item.typeOfWork.label}
             title={item.title}
             onSuccess={handleSuccess}
             onError={handleError}

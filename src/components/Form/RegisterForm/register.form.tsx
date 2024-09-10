@@ -4,6 +4,10 @@ import { useNavigate } from "react-router-dom";
 import { useForm, Controller, SubmitHandler } from 'react-hook-form'
 import { typeOfWorkOptions } from "@/constants/typeOfWork.options";
 import { useEffect } from "react";
+import { create } from "@/services/AuthorService";
+import { v4 } from 'uuid'
+import { Author } from "@/general";
+import { useAuthorActions } from "@/hooks/useAuthorActions";
 
 interface DataForm {
   title: string;
@@ -13,10 +17,23 @@ interface DataForm {
 
 export function RegisterForm() {
   const navigate = useNavigate();
+  const actions = useAuthorActions()
   const { handleSubmit, control, reset } = useForm<DataForm>()
 
   const onSubmit: SubmitHandler<DataForm> = (values) => {
-    alert(JSON.stringify(values))
+    const newAuthor = {
+      ...values,
+      id: v4(),
+      lastModify: new Date().toISOString(),
+    } satisfies Author;
+    create({
+      item: newAuthor,
+      callback: () => {
+        actions.handleSuccess("Cadastrado com sucesso!")
+        navigate('/')
+      },
+      callbackError: () => actions.handleError("Não foi possível cadastrar!"),
+    })
   }
 
   const handleNavigateToList = () => {

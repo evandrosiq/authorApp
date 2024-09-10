@@ -1,9 +1,10 @@
 import { Dispatch, ReactNode, SetStateAction } from "react";
+import { Option } from "./components/Combobox";
 
 export interface Author {
   id: string;
   title: string;
-  typeOfWork: string;
+  typeOfWork: Option;
   author: string;
   lastModify: string;
 }
