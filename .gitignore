@@ -12,6 +12,11 @@ dist
 dist-ssr
 *.local
 
+# Gerenciador oficial do projeto é npm (ver CLAUDE.md) — package-lock.json é o
+# lockfile versionado. yarn.lock é gerado por algum processo externo (editor?)
+# não identificado; ignorado para não voltar a ser rastreado por engano.
+yarn.lock
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json

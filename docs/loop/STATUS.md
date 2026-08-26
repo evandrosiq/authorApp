@@ -41,9 +41,14 @@
   fora do escopo dela (as RNs da spec tratam apenas de *ordenação* usar o
   rótulo, RN-13, não de como a célula é exibida). Candidato a spec própria se
   o usuário quiser corrigir.
-- **`yarn.lock` segue órfão no repositório** e foi visto se regenerando sozinho
-  durante a sessão (provável auto-sync do editor, não uma ação desta sessão) —
-  o gerenciador oficial é npm (ver CLAUDE.md); considerar removê-lo de vez.
+- **`yarn.lock` resolvido (2026-08-26):** removido do rastreamento do git
+  (`git rm --cached`) e adicionado ao `.gitignore`. Não foi possível
+  identificar no repositório o que regenera o arquivo fisicamente (nenhum
+  script, hook ou config do projeto referencia `yarn install`/`yarn` —
+  provável processo do editor, fora do controle deste repo); o arquivo pode
+  continuar aparecendo no disco, mas nunca mais deve aparecer como pendência
+  no `git status` nem ser commitado por engano. Gerenciador oficial continua
+  npm (`package-lock.json`).
 
 ## Decisões recentes
 
@@ -74,14 +79,13 @@
 ## Próximos passos
 
 1. Nenhuma task pendente no momento. Todos os gates (testes, lint, tipos,
-   build, check:patterns, check:audit) estão verdes. Sugestões para a próxima
-   sessão:
-   - Commitar o trabalho acumulado (SPEC-001 + infraestrutura do loop + fix
-     de audit) — nada disso está commitado ainda.
+   build, check:patterns, check:audit) estão verdes; trabalho da SPEC-001 e da
+   migração para `@tanstack/react-table` já commitado e enviado (`main` em
+   sincronia com `origin`). Sugestões para a próxima sessão:
    - `/especificar` para o bug de exibição do tipo de obra no `TableRow`, se o
      usuário quiser corrigi-lo.
    - Planejar o upgrade major de vite/vitest (ver exceções em
      `audit-allowlist.json`) como task própria, com testes de regressão.
    - `/code-review` no diff acumulado, se quiser uma revisão de correção/
-     simplificação antes de commitar (complementar ao `/revisar-regras`, que
-     olha rastreabilidade, não bugs).
+     simplificação (complementar ao `/revisar-regras`, que olha
+     rastreabilidade, não bugs).
