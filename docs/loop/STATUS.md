@@ -35,6 +35,18 @@
   Registradas como exceção justificada em `audit-allowlist.json` (risco restrito
   ao dev server/test runner local, não compõe o build de produção). Reavaliar
   ao planejar o upgrade major dessas duas. Gate verde agora.
+- **`react-router`/`react-router-dom` atualizado 6.30.6 → 7.18.2 (2026-08-26):**
+  resolvia 2 vulnerabilidades moderate (open redirect via backslash em
+  `<Link>`/`useNavigate`, GHSA-wrjc-x8rr-h8h6; injeção via `deserializeErrors()`,
+  GHSA-337j-9hxr-rhxg) — nenhuma correção existe em nenhuma versão 6.x, só a
+  partir de 7.18.0. Avaliação rodada (upgrade major, engines/peerDeps
+  conferidos: Node ≥20, React ≥18, ambos compatíveis). Uso no código é só API
+  clássica (`useNavigate`, `useParams`, `useLocation`, `BrowserRouter`,
+  `Routes`, `Route`, sem loaders/data router), risco de breaking change baixo
+  e confirmado: 44 testes verdes, gates verdes, navegação testada manualmente
+  no browser real (`/` → `/editar/:id` com `useParams` e pré-preenchimento do
+  form). Os warnings de "React Router Future Flag" que apareciam nos testes
+  desde a v6 sumiram (viraram comportamento padrão da v7).
 - **`TableRow` exibe o valor interno de tipo de obra** (`obra`/`fonograma`/
   `potpourri`), não o rótulo amigável (Obra/Fonograma/Pot-pourri) que o
   `Combobox` do cadastro usa. Pré-existente, descoberto durante a SPEC-001 —
