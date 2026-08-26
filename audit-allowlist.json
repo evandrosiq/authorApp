@@ -1,0 +1,17 @@
+{
+  "_comentario": "Cada exceção precisa de id (GHSA do advisory), package, justificativa (por que a vulnerabilidade não se aplica ou não tem correção viável) e reavaliarQuando (condição que torna a exceção obsoleta). Lista vazia = nenhuma vulnerabilidade alta/crítica tolerada.",
+  "exceptions": [
+    {
+      "id": "GHSA-fx2h-pf6j-xcff",
+      "package": "vite",
+      "justificativa": "Vulnerabilidade está no esbuild embutido no dev server do vite (permite site malicioso enviar requisição ao dev server local e ler a resposta). Só afeta quem roda `npm run dev` e visita um site malicioso ao mesmo tempo — não afeta o build de produção (arquivos estáticos, sem esbuild/vite em runtime). Fix exige `npm audit fix --force` (vite@6.4.3, major breaking).",
+      "reavaliarQuando": "Ao planejar upgrade do vite para 6.x (avaliação de breaking changes em config/plugins) ou se o dev server passar a ser exposto fora de localhost."
+    },
+    {
+      "id": "GHSA-5xrq-8626-4rwp",
+      "package": "vitest",
+      "justificativa": "Vulnerabilidade herdada de @vitest/mocker/vite, exclusiva de ferramenta de teste rodando em ambiente de desenvolvimento local — não compõe o bundle publicado. Fix exige `npm audit fix --force` (vitest@4.1.11 e @vitest/coverage-v8@4.1.11, major breaking).",
+      "reavaliarQuando": "Ao planejar upgrade do vitest para 4.x (avaliação de breaking changes na API de testes e no coverage-v8)."
+    }
+  ]
+}
