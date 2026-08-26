@@ -1,8 +1,7 @@
 import { DataTable } from "../components/DataTable";
 import { Footer } from "../components/Footer";
 import { Header } from "../components/Header";
-import { ListingFilters } from "../components/ListingFilters";
-import { Pagination } from "../components/Pagination";
+import { ColumnFiltersRow, GeneralFilterRow } from "../components/ListingFilters";
 import { useTableListing } from "../hooks/useTableListing";
 
 export function HomePage(): React.ReactElement {
@@ -24,26 +23,24 @@ export function HomePage(): React.ReactElement {
 
   return (
     <div className="listing">
-      <ListingFilters
-        generalFilter={generalFilter}
-        onGeneralFilterChange={setGeneralFilter}
-        columnFilters={columnFilters}
-        onColumnFilterChange={setColumnFilter}
-        onClear={clearFilters}
-      />
       <table className="table">
-        <Header sort={sort} onSort={toggleSort} />
+        <thead className="table__content-header" role="rowgroup">
+          <GeneralFilterRow
+            generalFilter={generalFilter}
+            onGeneralFilterChange={setGeneralFilter}
+            onClear={clearFilters}
+          />
+          <Header sort={sort} onSort={toggleSort} />
+          <ColumnFiltersRow columnFilters={columnFilters} onColumnFilterChange={setColumnFilter} />
+        </thead>
         <DataTable items={items} hasAnyItems={hasAnyItems} />
-        <Footer />
-      </table>
-      {resultRange.total > 0 && (
-        <Pagination
+        <Footer
           page={page}
           lastValidPage={lastValidPage}
           resultRange={resultRange}
           onPageChange={setPage}
         />
-      )}
+      </table>
     </div>
   );
 }

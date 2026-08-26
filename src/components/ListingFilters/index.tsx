@@ -1,41 +1,47 @@
-import { ListingFiltersProps } from "../../general";
+import { ColumnFiltersRowProps, GeneralFilterRowProps } from "../../general";
+import { TABLE_COLUMNS_COUNT } from "../Header";
 import { TYPE_OF_WORK_OPTIONS } from "../../services/ListingService";
-import { InputField } from "../InputField";
 
-export function ListingFilters({
+export function GeneralFilterRow({
   generalFilter,
   onGeneralFilterChange,
-  columnFilters,
-  onColumnFilterChange,
   onClear,
-}: ListingFiltersProps) {
+}: GeneralFilterRowProps) {
   return (
-    <div className="listing-filters">
-      <InputField
-        id="general-filter"
-        label="Buscar"
-        name="generalFilter"
-        placeholder="Buscar por autor, tipo ou título"
-        value={generalFilter}
-        onChange={(event) => onGeneralFilterChange(event.target.value)}
-      />
-      <InputField
-        id="author-filter"
-        label="Autor"
-        name="author"
-        placeholder="Filtrar por autor"
-        value={columnFilters.author}
-        onChange={(event) => onColumnFilterChange("author", event.target.value)}
-      />
-      <InputField
-        id="title-filter"
-        label="Título"
-        name="title"
-        placeholder="Filtrar por título"
-        value={columnFilters.title}
-        onChange={(event) => onColumnFilterChange("title", event.target.value)}
-      />
-      <div className="listing-filters__select">
+    <tr className="table__row-filter-general" role="row">
+      <th className="table__cell-filter-general" role="columnheader" colSpan={TABLE_COLUMNS_COUNT}>
+        <label htmlFor="general-filter">Buscar</label>
+        <input
+          type="text"
+          id="general-filter"
+          name="generalFilter"
+          placeholder="Buscar por autor, tipo ou título"
+          value={generalFilter}
+          onChange={(event) => onGeneralFilterChange(event.target.value)}
+        />
+        <button type="button" className="table__filter-clear" onClick={onClear}>
+          Limpar filtros
+        </button>
+      </th>
+    </tr>
+  );
+}
+
+export function ColumnFiltersRow({ columnFilters, onColumnFilterChange }: ColumnFiltersRowProps) {
+  return (
+    <tr className="table__row-filter-columns" role="row">
+      <th className="table__cell-filter" role="columnheader">
+        <label htmlFor="author-filter">Autor</label>
+        <input
+          type="text"
+          id="author-filter"
+          name="author"
+          placeholder="Filtrar por autor"
+          value={columnFilters.author}
+          onChange={(event) => onColumnFilterChange("author", event.target.value)}
+        />
+      </th>
+      <th className="table__cell-filter" role="columnheader">
         <label htmlFor="type-of-work-filter">Tipo de obra</label>
         <select
           id="type-of-work-filter"
@@ -50,10 +56,19 @@ export function ListingFilters({
             </option>
           ))}
         </select>
-      </div>
-      <button type="button" className="listing-filters__clear" onClick={onClear}>
-        Limpar filtros
-      </button>
-    </div>
+      </th>
+      <th className="table__cell-filter" role="columnheader">
+        <label htmlFor="title-filter">Título</label>
+        <input
+          type="text"
+          id="title-filter"
+          name="title"
+          placeholder="Filtrar por título"
+          value={columnFilters.title}
+          onChange={(event) => onColumnFilterChange("title", event.target.value)}
+        />
+      </th>
+      <th className="table__cell-filter" aria-hidden="true" />
+    </tr>
   );
 }

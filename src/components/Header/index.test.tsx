@@ -9,7 +9,9 @@ describe("Header — ordenação por coluna (RN-10, RN-11, RN-12)", () => {
     const user = userEvent.setup();
     render(
       <table>
-        <Header sort={null} onSort={onSort} />
+        <thead>
+          <Header sort={null} onSort={onSort} />
+        </thead>
       </table>,
     );
 
@@ -21,7 +23,9 @@ describe("Header — ordenação por coluna (RN-10, RN-11, RN-12)", () => {
   it("RN-11 / RN-12: indica a coluna e a direção ativas via aria-sort", () => {
     render(
       <table>
-        <Header sort={{ field: "title", direction: "desc" }} onSort={vi.fn()} />
+        <thead>
+          <Header sort={{ field: "title", direction: "desc" }} onSort={vi.fn()} />
+        </thead>
       </table>,
     );
 
@@ -35,7 +39,9 @@ describe("Header — ordenação por coluna (RN-10, RN-11, RN-12)", () => {
   it("não expõe ordenação na coluna Ações", () => {
     render(
       <table>
-        <Header sort={null} onSort={vi.fn()} />
+        <thead>
+          <Header sort={null} onSort={vi.fn()} />
+        </thead>
       </table>,
     );
 

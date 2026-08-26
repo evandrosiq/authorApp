@@ -353,3 +353,22 @@ listagem existente, para quem cadastra e consulta autores/obras.
   RN-17 também cobertas sem ressalva) e as **RN-18** e **RN-19** novas,
   cobertas pelos testes que já existiam desde T5/T6. 61 testes no total,
   gates verdes. **SPEC-001 fechada: 19/19 RNs cobertas.**
+- 2026-08-26 — [ADR-0002](../adrs/ADR-0002-tanstack-react-table.md): a
+  implementação por trás das 19 RNs foi trocada de `ListingService.ts`/
+  `useTableListing.ts` próprios para o motor `@tanstack/react-table` v9
+  (`useLegacyTable`), por decisão do usuário contra a recomendação da
+  avaliação de libs. Nenhuma RN mudou de comportamento — só o motor interno.
+  `ListingColumns.ts` (novo) concentra as regras que o TanStack não cobre
+  nativamente: `sortFn` customizado para RN-13 (ordenar pelo rótulo, não pelo
+  valor interno) e `filterFn` customizado para RN-03/RN-04/RN-05.
+  `ListingService.ts` ficou reduzido a utilitários de texto (RN-01/RN-02).
+  Durante a implementação foram encontrados dois bugs reais de propagação de
+  estado em `useLegacyTable` (v9.1.2, recém-lançada) quando a instância
+  `table` é consumida por um componente filho — documentados no ADR. Contorno:
+  `useTableListing` isola toda leitura da API do TanStack; os componentes de
+  UI (`Header`, `Pagination`, `ListingFilters`, `DataTable`, `Footer`) mantêm
+  exatamente a mesma interface de props de antes da migração. Testes
+  re-portados (mesma cobertura das 19 RNs, 44 testes — queda de 61 porque a
+  paginação/ordenação genérica virou responsabilidade da lib, sem função
+  pura própria para testar isoladamente). Gates verdes; confirmado também
+  manualmente no browser real.

@@ -258,7 +258,7 @@ describe("HomePage — limpar filtros (RN-15)", () => {
     expect(screen.getByLabelText("Título")).toHaveValue("");
     expect(screen.getByLabelText("Tipo de obra")).toHaveValue("");
     expect(await screen.findByText("Mostrando 1–10 de 15")).toBeInTheDocument();
-    expect(screen.getByRole("columnheader", { name: /Autor/ })).toHaveAttribute(
+    expect(screen.getByRole("columnheader", { name: "Autor ▲" })).toHaveAttribute(
       "aria-sort",
       "ascending",
     );

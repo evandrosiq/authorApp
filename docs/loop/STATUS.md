@@ -4,7 +4,10 @@
 > É o primeiro arquivo lido por /retomar — mantenha-o curto e fiel à realidade.
 
 - **Última atualização:** 2026-08-26
-- **Task atual:** nenhuma — SPEC-001 concluída
+- **Task atual:** nenhuma — migração da listagem (SPEC-001) para
+  `@tanstack/react-table` v9 concluída (ADR-0002). Todos os gates verdes,
+  confirmado também no browser real (filtro + ordenação + paginação
+  combinados).
 
 ## Specs
 
@@ -44,6 +47,24 @@
 
 ## Decisões recentes
 
+- [ADR-0002](adrs/ADR-0002-tanstack-react-table.md) — substitui a lógica interna
+  de `ListingService.ts`/`useTableListing.ts` (paginação/ordenação genérica,
+  reducer) pelo motor `@tanstack/react-table` v9, via `useLegacyTable`
+  (2026-08-26). A avaliação de libs recomendou **não** trocar; usuário decidiu
+  seguir mesmo assim, visando capacidade de crescimento futura. Uma segunda lib
+  cogitada depois (`material-react-table`) foi descartada na mesma sessão: trava
+  em `@tanstack/react-table@8.20.6` interno (incompatível com a v9 já adotada) e
+  traria MUI/Emotion como peer dependencies. **Achado importante:** `useLegacyTable`
+  nesta versão (v9.1.2, GA há poucos dias) tem bugs reais de propagação de
+  estado quando a instância `table` é passada para um componente filho — ver
+  seção "Bug encontrado" no ADR. Contorno aplicado: nenhum componente de UI
+  recebe `table`; toda leitura de getters derivados acontece dentro de
+  `useTableListing`, que devolve valores já calculados — os componentes
+  (`Header`, `Pagination`, `ListingFilters`, `DataTable`, `Footer`) têm
+  exatamente a mesma interface de props que tinham antes da migração. Nenhuma
+  RN da SPEC-001 muda — só a implementação por trás. Confirmado com os 44
+  testes verdes e verificação manual no browser real (filtro + ordenação +
+  paginação combinados).
 - [ADR-0001](adrs/ADR-0001-vitest-testing-library.md) — Vitest + Testing Library como
   framework de testes (2026-08-25).
 - SPEC-001/T3 manteve o estado de filtro/ordenação/página no `ApplicationContext`

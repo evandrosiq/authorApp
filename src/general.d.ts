@@ -1,13 +1,7 @@
 import { Dispatch, ReactNode, SetStateAction } from "react";
 import { SingleValue } from "react-select";
-import {
-  ColumnFilters,
-  ListingAction,
-  ListingState,
-  ResultRange,
-  SortField,
-  SortState,
-} from "./services/ListingService";
+import { ColumnFiltersState, PaginationState, SortingState } from "@tanstack/react-table";
+import { ColumnFilters, ResultRange, SortField, SortState } from "./services/ListingService";
 
 export interface Author {
   id: string;
@@ -45,12 +39,22 @@ export interface PaginationProps {
   onPageChange: (page: number) => void;
 }
 
-export interface ListingFiltersProps {
+export interface FooterProps {
+  page: number;
+  lastValidPage: number;
+  resultRange: ResultRange;
+  onPageChange: (page: number) => void;
+}
+
+export interface GeneralFilterRowProps {
   generalFilter: string;
   onGeneralFilterChange: (value: string) => void;
+  onClear: () => void;
+}
+
+export interface ColumnFiltersRowProps {
   columnFilters: ColumnFilters;
   onColumnFilterChange: (field: keyof ColumnFilters, value: string) => void;
-  onClear: () => void;
 }
 
 export interface InputProps {
@@ -76,8 +80,14 @@ export interface TableRowProps {
 export interface ApplicationContextType {
   tableData: Author[] | null;
   setTableData: Dispatch<SetStateAction<Author[] | null>>;
-  listingState: ListingState;
-  dispatchListing: Dispatch<ListingAction>;
+  sorting: SortingState;
+  setSorting: Dispatch<SetStateAction<SortingState>>;
+  columnFilters: ColumnFiltersState;
+  setColumnFilters: Dispatch<SetStateAction<ColumnFiltersState>>;
+  globalFilter: string;
+  setGlobalFilter: Dispatch<SetStateAction<string>>;
+  pagination: PaginationState;
+  setPagination: Dispatch<SetStateAction<PaginationState>>;
 }
 
 export interface ApplicationContextProviderProps {
