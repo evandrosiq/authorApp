@@ -130,6 +130,13 @@ explícitas), o que quer que aconteça primeiro. Vale reproduzir os testes
 mínimos acima contra a versão nova antes de voltar a passar `table` para
 componentes filhos.
 
+**Checagem (2026-08-26, mesma semana da decisão):** `9.1.2` continua sendo a
+versão mais recente publicada (nenhum release desde 2026-08-09); busca por
+issues no repositório `TanStack/table` não encontrou relato público desse bug
+específico. Nada a mudar agora — a mitigação acima segue vigente. Repetir esta
+checagem (`npm view @tanstack/react-table time.modified`) antes de qualquer
+tentativa futura de voltar a passar `table` para componentes filhos.
+
 ## Dependência descartada: `material-react-table`
 
 Cogitada como alternativa para a camada de UI (renderização pronta em cima do

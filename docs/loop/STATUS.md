@@ -25,14 +25,17 @@
   encontradas (RN-07 caso-limite de dataset pequeno; RN-09/RN-17 excluir o
   único item restante) já foram fechadas na mesma sessão. 61 testes, gates
   verdes.
-- **`npm run check:audit` resolvido (2026-08-26):** `npm audit fix` (sem
-  `--force`) eliminou as 3 vulnerabilidades de `brace-expansion` sem breaking
-  change. Restaram `vite` (GHSA-fx2h-pf6j-xcff, high) e `vitest`
-  (GHSA-5xrq-8626-4rwp, critical) — ambas só têm fix via `--force` com major
-  bump (vite 5→6, vitest 2→4), risco de quebrar config/plugins/coverage.
-  Registradas como exceção justificada em `audit-allowlist.json` (risco restrito
-  ao dev server/test runner local, não compõe o build de produção). Reavaliar
-  ao planejar o upgrade major dessas duas. Gate verde agora.
+- **`npm audit` zerado (2026-08-26):** [ADR-0003](adrs/ADR-0003-upgrade-vite-vitest.md)
+  — `vite` 5.4.21→6.4.3 e `vitest`/`@vitest/coverage-v8` 2.1.9→4.1.11 (pulando a
+  v3 inteira), resolvendo as 2 últimas exceções em `audit-allowlist.json`
+  (agora vazio). **Achado importante:** `vite@7`/`8` e `@vitejs/plugin-react@5`+
+  exigem Node `>=20.19.0`/`22.12.0` — o ambiente tem `20.18.0`, então **vite
+  6.4.3 é o teto real**, não a versão mais recente publicada; subir mais exige
+  atualizar o Node primeiro. `@vitejs/plugin-react` ficou em `4.7.0` (já
+  aceitava vite 6, sem mudança). `jsdom` continua pinado em `^25` (ADR-0001
+  atualizado): jsdom 26+ exige Node `>=22.13.0`, mesma limitação. `npm audit`
+  agora reporta 0 vulnerabilidades. 48 testes verdes, sem mudança de código —
+  só de versão de dependência.
 - **`react-router`/`react-router-dom` atualizado 6.30.6 → 7.18.2 (2026-08-26):**
   resolvia 2 vulnerabilidades moderate (open redirect via backslash em
   `<Link>`/`useNavigate`, GHSA-wrjc-x8rr-h8h6; injeção via `deserializeErrors()`,
@@ -60,6 +63,9 @@
 
 ## Decisões recentes
 
+- [ADR-0003](adrs/ADR-0003-upgrade-vite-vitest.md) — upgrade de vite (5→6) e
+  vitest (2→4) até o teto compatível com o Node do ambiente (2026-08-26); ver
+  bloqueio acima.
 - [ADR-0002](adrs/ADR-0002-tanstack-react-table.md) — substitui a lógica interna
   de `ListingService.ts`/`useTableListing.ts` (paginação/ordenação genérica,
   reducer) pelo motor `@tanstack/react-table` v9, via `useLegacyTable`
@@ -87,11 +93,12 @@
 ## Próximos passos
 
 1. Nenhuma task pendente no momento. Todos os gates (testes, lint, tipos,
-   build, check:patterns, check:audit) estão verdes. `main` local está à
-   frente de `origin` (remoção do `yarn.lock`, upgrade do `react-router-dom`,
-   SPEC-002) — push pendente. Sugestões para a próxima sessão:
-   - Planejar o upgrade major de vite/vitest (ver exceções em
-     `audit-allowlist.json`) como task própria, com testes de regressão.
+   build, check:patterns, check:audit) estão verdes; `npm audit` zerado.
+   `main` local está à frente de `origin` (yarn.lock, react-router-dom,
+   SPEC-002, upgrade vite/vitest) — push pendente. Sugestões para a próxima
+   sessão:
+   - Se o Node do ambiente subir para ≥20.19.0/22.12.0 no futuro, reavaliar o
+     teto de vite/vitest/jsdom/@vitejs-plugin-react registrado no ADR-0003.
    - `/code-review` no diff acumulado, se quiser uma revisão de correção/
      simplificação (complementar ao `/revisar-regras`, que olha
      rastreabilidade, não bugs).

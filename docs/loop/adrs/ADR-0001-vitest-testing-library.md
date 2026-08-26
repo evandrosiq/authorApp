@@ -33,9 +33,15 @@ de módulos e mesmos plugins do build), com:
 - `src/test/setup.ts` fazendo `cleanup()` e `localStorage.clear()` após cada teste —
   necessário porque a persistência do app é localStorage e o estado vazaria entre testes.
 
-**`jsdom` fica pinado em `^25`.** O jsdom 27 é carregado via `require()` pelo Vitest 2
-e quebra com `ERR_REQUIRE_ESM` (`@csstools/css-calc` é ESM-only). Reavaliar ao subir
-para Vitest 3.
+**`jsdom` fica pinado em `^25`.** Motivo original: o jsdom 27 era carregado via
+`require()` pelo Vitest 2 e quebrava com `ERR_REQUIRE_ESM` (`@csstools/css-calc` é
+ESM-only).
+
+**Atualização (2026-08-26):** o projeto migrou para Vitest 4.1.11 (ver ADR-0003).
+O motivo do pin mudou — não é mais o bug `ERR_REQUIRE_ESM` (não testado diretamente
+nesta reavaliação), e sim `engines.node`: jsdom 26+ exige Node `>=22.13.0`/`24.x`, e o
+jsdom 30 (testado) chegou a exigir `>=22.22.2`, acima do Node real do ambiente
+(20.18.0). O pin em `^25` permanece necessário até o ambiente rodar Node ≥22.
 
 ## Consequências
 
