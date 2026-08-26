@@ -1,4 +1,4 @@
-import { createContext, useEffect, useMemo, useState } from "react";
+import { createContext, useEffect, useReducer, useState } from "react";
 import { useLocation } from "react-router-dom";
 import {
   ApplicationContextProviderProps,
@@ -6,6 +6,7 @@ import {
   Author,
 } from "../general";
 import { getAll } from "../services/AuthorService";
+import { INITIAL_LISTING_STATE, listingReducer } from "../services/ListingService";
 
 export const ApplicationContext = createContext<
   ApplicationContextType | undefined
@@ -16,19 +17,20 @@ export const ApplicationContextProvider = ({
 }: ApplicationContextProviderProps) => {
   const location = useLocation();
   const [tableContext, setTableContext] = useState<Author[] | null>(null);
-
-  const allItems = useMemo(() => {
-    return getAll() ?? [];
-  }, [location.pathname]);
+  const [listingState, dispatchListing] = useReducer(listingReducer, INITIAL_LISTING_STATE);
 
   useEffect(() => {
-    const authors = allItems;
-    setTableContext(authors);
-  }, [allItems]);
+    setTableContext(getAll() ?? []);
+  }, [location.pathname]);
 
   return (
     <ApplicationContext.Provider
-      value={{ tableData: tableContext, setTableData: setTableContext }}
+      value={{
+        tableData: tableContext,
+        setTableData: setTableContext,
+        listingState,
+        dispatchListing,
+      }}
     >
       {children}
     </ApplicationContext.Provider>

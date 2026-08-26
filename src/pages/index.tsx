@@ -1,3 +1,3 @@
-export * from "./edit";
-export * from "./home";
-export * from "./register";
+export { EditPage } from "./edit";
+export { HomePage } from "./home";
+export { RegisterPage } from "./register";

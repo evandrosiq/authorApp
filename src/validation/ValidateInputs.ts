@@ -9,7 +9,7 @@ interface ValidationLabels {
 }
 
 export function ValidateInputs(inputData: { [key: string]: string }, labels: ValidationLabels): { validationErrors: ValidationErrors, isValid: boolean } {
-  let validationErrors: ValidationErrors = {
+  const validationErrors: ValidationErrors = {
     title: '',
     typeOfWork: '',
     author: ''

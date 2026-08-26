@@ -1,16 +1,49 @@
 import { DataTable } from "../components/DataTable";
 import { Footer } from "../components/Footer";
 import { Header } from "../components/Header";
-import { useApplicationContext } from "../hooks/useApplicationContext";
+import { ListingFilters } from "../components/ListingFilters";
+import { Pagination } from "../components/Pagination";
+import { useTableListing } from "../hooks/useTableListing";
 
 export function HomePage(): React.ReactElement {
-  const { tableData } = useApplicationContext();
+  const {
+    items,
+    hasAnyItems,
+    resultRange,
+    page,
+    lastValidPage,
+    setPage,
+    generalFilter,
+    setGeneralFilter,
+    columnFilters,
+    setColumnFilter,
+    sort,
+    toggleSort,
+    clearFilters,
+  } = useTableListing();
 
   return (
-    <table className="table">
-      <Header />
-      <DataTable tableData={tableData} />
-      <Footer />
-    </table>
+    <div className="listing">
+      <ListingFilters
+        generalFilter={generalFilter}
+        onGeneralFilterChange={setGeneralFilter}
+        columnFilters={columnFilters}
+        onColumnFilterChange={setColumnFilter}
+        onClear={clearFilters}
+      />
+      <table className="table">
+        <Header sort={sort} onSort={toggleSort} />
+        <DataTable items={items} hasAnyItems={hasAnyItems} />
+        <Footer />
+      </table>
+      {resultRange.total > 0 && (
+        <Pagination
+          page={page}
+          lastValidPage={lastValidPage}
+          resultRange={resultRange}
+          onPageChange={setPage}
+        />
+      )}
+    </div>
   );
 }

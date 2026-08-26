@@ -27,7 +27,7 @@ export function TableRow({
       const currentData = getAll();
       setTableData(currentData);
       onSuccess("Item deletado com sucesso!");
-    } catch (error) {
+    } catch {
       onError("Erro ao deletar o item.");
     }
   };

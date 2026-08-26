@@ -1,5 +1,13 @@
 import { Dispatch, ReactNode, SetStateAction } from "react";
 import { SingleValue } from "react-select";
+import {
+  ColumnFilters,
+  ListingAction,
+  ListingState,
+  ResultRange,
+  SortField,
+  SortState,
+} from "./services/ListingService";
 
 export interface Author {
   id: string;
@@ -21,7 +29,28 @@ export interface ComboboxProps {
 }
 
 export interface DataTableProps {
-  tableData: Author[] | null;
+  items: Author[];
+  hasAnyItems: boolean;
+}
+
+export interface HeaderProps {
+  sort: SortState | null;
+  onSort: (field: SortField) => void;
+}
+
+export interface PaginationProps {
+  page: number;
+  lastValidPage: number;
+  resultRange: ResultRange;
+  onPageChange: (page: number) => void;
+}
+
+export interface ListingFiltersProps {
+  generalFilter: string;
+  onGeneralFilterChange: (value: string) => void;
+  columnFilters: ColumnFilters;
+  onColumnFilterChange: (field: keyof ColumnFilters, value: string) => void;
+  onClear: () => void;
 }
 
 export interface InputProps {
@@ -47,6 +76,8 @@ export interface TableRowProps {
 export interface ApplicationContextType {
   tableData: Author[] | null;
   setTableData: Dispatch<SetStateAction<Author[] | null>>;
+  listingState: ListingState;
+  dispatchListing: Dispatch<ListingAction>;
 }
 
 export interface ApplicationContextProviderProps {

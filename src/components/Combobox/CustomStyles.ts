@@ -1,6 +1,8 @@
+import { StylesConfig } from "react-select";
+import { Option } from "../../general";
 
-export const customStyles = {
-    control: (provided: any, state:any) => ({
+export const customStyles: StylesConfig<Option, false> = {
+    control: (provided, state) => ({
         ...provided,
         border: '1px solid #f08080',
         borderRadius: '10px',
@@ -11,7 +13,7 @@ export const customStyles = {
           borderColor: state.isFocused ? '#ff7f50' : provided.borderColor
         }
     }),
-    menu: (provided: any) => ({
+    menu: (provided) => ({
         ...provided,
         width: 180,
         backgroundColor: 'white',
@@ -22,13 +24,13 @@ export const customStyles = {
         borderBottom: 'none',
         boxShadow: 'none',
     }),
-    menuList: (provided: any) => ({
+    menuList: (provided) => ({
         ...provided,
         width: 180,
         maxHeight: '590px',
         overflowY: 'auto',
     }),
-    option: (provided: any, state: any) => ({
+    option: (provided, state) => ({
         ...provided,
         width: 180,
         backgroundColor: state.isSelected ? 'white' : 'white',
@@ -43,7 +45,7 @@ export const customStyles = {
             color: '#707070',
         },
     }),
-    valueContainer: (provided: any) => ({
+    valueContainer: (provided) => ({
         ...provided,
         fontFamily: 'Source Sans Pro, sans-serif',
         fontSize: '16px',
@@ -51,11 +53,11 @@ export const customStyles = {
         lineHeight: '30px',
         color: '#707070'
     }),
-    indicatorSeparator: (provided: any) => ({
+    indicatorSeparator: (provided) => ({
         ...provided,
         display: 'none',
     }),
-    indicatorsContainer: (provided: any) => ({
+    indicatorsContainer: (provided) => ({
         ...provided,
         "& > div": {
             background: 'transparent', 
@@ -67,7 +69,7 @@ export const customStyles = {
         height: '36px',
 
     }),
-    singleValue: (provided: any) => ({
+    singleValue: (provided) => ({
         ...provided,
         color: '#707070',
     }),
