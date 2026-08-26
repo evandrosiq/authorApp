@@ -4,16 +4,14 @@
 > É o primeiro arquivo lido por /retomar — mantenha-o curto e fiel à realidade.
 
 - **Última atualização:** 2026-08-26
-- **Task atual:** nenhuma — migração da listagem (SPEC-001) para
-  `@tanstack/react-table` v9 concluída (ADR-0002). Todos os gates verdes,
-  confirmado também no browser real (filtro + ordenação + paginação
-  combinados).
+- **Task atual:** nenhuma — SPEC-002 concluída.
 
 ## Specs
 
 | Spec | Domínio | Nome | Status | Progresso |
 |------|---------|------|--------|-----------|
 | [SPEC-001](specs/SPEC-001-listagem-filtros-ordenacao-paginacao.md) | — | Filtro, ordenação e paginação da listagem | concluída | 7/7 tasks |
+| [SPEC-002](specs/SPEC-002-rotulo-tipo-de-obra-na-listagem.md) | — | Rótulo do tipo de obra na célula da listagem | concluída | 1/1 task |
 
 > Coluna "Domínio" só é preenchida se o projeto agrupar specs por domínio
 > (`docs/loop/specs/<domínio>/`); caso contrário, deixe "—".
@@ -47,12 +45,10 @@
   no browser real (`/` → `/editar/:id` com `useParams` e pré-preenchimento do
   form). Os warnings de "React Router Future Flag" que apareciam nos testes
   desde a v6 sumiram (viraram comportamento padrão da v7).
-- **`TableRow` exibe o valor interno de tipo de obra** (`obra`/`fonograma`/
-  `potpourri`), não o rótulo amigável (Obra/Fonograma/Pot-pourri) que o
-  `Combobox` do cadastro usa. Pré-existente, descoberto durante a SPEC-001 —
-  fora do escopo dela (as RNs da spec tratam apenas de *ordenação* usar o
-  rótulo, RN-13, não de como a célula é exibida). Candidato a spec própria se
-  o usuário quiser corrigir.
+- **`TableRow` exibe o valor interno de tipo de obra — resolvido (2026-08-26):**
+  [SPEC-002](specs/SPEC-002-rotulo-tipo-de-obra-na-listagem.md), 2/2 RNs
+  cobertas. `TableRow` agora usa `typeOfWorkLabel(typeOfWork)`, mudança de uma
+  linha, 4 testes novos. Gates verdes, sem regressão.
 - **`yarn.lock` resolvido (2026-08-26):** removido do rastreamento do git
   (`git rm --cached`) e adicionado ao `.gitignore`. Não foi possível
   identificar no repositório o que regenera o arquivo fisicamente (nenhum
@@ -91,11 +87,9 @@
 ## Próximos passos
 
 1. Nenhuma task pendente no momento. Todos os gates (testes, lint, tipos,
-   build, check:patterns, check:audit) estão verdes; trabalho da SPEC-001 e da
-   migração para `@tanstack/react-table` já commitado e enviado (`main` em
-   sincronia com `origin`). Sugestões para a próxima sessão:
-   - `/especificar` para o bug de exibição do tipo de obra no `TableRow`, se o
-     usuário quiser corrigi-lo.
+   build, check:patterns, check:audit) estão verdes. `main` local está à
+   frente de `origin` (remoção do `yarn.lock`, upgrade do `react-router-dom`,
+   SPEC-002) — push pendente. Sugestões para a próxima sessão:
    - Planejar o upgrade major de vite/vitest (ver exceções em
      `audit-allowlist.json`) como task própria, com testes de regressão.
    - `/code-review` no diff acumulado, se quiser uma revisão de correção/

@@ -3,6 +3,7 @@ import { DeleteIcon, EditIcon } from "../../assets/icons";
 import { TableRowProps } from "../../general";
 import { useApplicationContext } from "../../hooks/useApplicationContext";
 import { deleteItem, getAll } from "../../services/AuthorService";
+import { typeOfWorkLabel } from "../../services/ListingService";
 
 export function TableRow({
   id,
@@ -38,7 +39,7 @@ export function TableRow({
         {author}
       </td>
       <td className="table__cell" role="cell">
-        {typeOfWork}
+        {typeOfWorkLabel(typeOfWork)}
       </td>
       <td className="table__cell" role="cell">
         {title}
