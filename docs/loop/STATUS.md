@@ -19,12 +19,18 @@
 
 ## Bloqueios e questões em aberto
 
-- **`/revisar-regras SPEC-001` (2026-08-25):** 19/19 RNs cobertas (as 17
-  originais + RN-18/RN-19, documentadas depois de uma regra fantasma
-  encontrada na auditoria). Nenhuma pendência restante — as 2 lacunas de teste
-  encontradas (RN-07 caso-limite de dataset pequeno; RN-09/RN-17 excluir o
-  único item restante) já foram fechadas na mesma sessão. 61 testes, gates
-  verdes.
+- **`/revisar-regras SPEC-001` re-auditada pós-migração (2026-08-26):** a
+  auditoria original (2026-08-25, 19/19 COBERTA) valia para a implementação
+  com reducer próprio; após ADR-0002 trocar o motor, a suíte caiu de 61 para
+  48 testes e a re-auditoria achou 4 `PARCIAL` (RN-08, RN-14, RN-15, RN-16) e
+  1 `AUSENTE` (RN-19). Todas fechadas com 8 testes novos. **Achado sério**: o
+  teste mais rigoroso de RN-16 revelou um bug real — a página não sobrevivia
+  à navegação editar→voltar no browser real (só passava em teste porque
+  Testing Library não usa `React.StrictMode`). Causa e correção em
+  [ADR-0002](adrs/ADR-0002-tanstack-react-table.md) ("reset de página indevido
+  sob StrictMode"). Corrigido, confirmado no browser real, protegido por
+  teste que roda sob `<StrictMode>` deliberadamente. 55 testes, gates verdes.
+  SPEC-001 re-fechada: 19/19 RNs cobertas na implementação atual.
 - **`npm audit` zerado (2026-08-26):** [ADR-0003](adrs/ADR-0003-upgrade-vite-vitest.md)
   — `vite` 5.4.21→6.4.3 e `vitest`/`@vitest/coverage-v8` 2.1.9→4.1.11 (pulando a
   v3 inteira), resolvendo as 2 últimas exceções em `audit-allowlist.json`

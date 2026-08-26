@@ -42,8 +42,18 @@ export function useTableListing() {
   const table = useLegacyTable({
     data,
     columns: listingColumns,
-    // RN-11: alterna asc/desc na mesma coluna para sempre — nunca remove a ordenação por clique.
+    // RN-11 é garantida de fato pelo toggleSort manual abaixo (nunca produz array vazio).
+    // enableSortingRemoval:false é defesa em profundidade: só passaria a valer se algum código
+    // futuro chamasse column.toggleSorting()/getToggleSortingHandler() da API nativa do TanStack
+    // em vez do toggleSort exposto por este hook.
     enableSortingRemoval: false,
+    // Desliga o autoReset nativo da lib (sorting/filtering/paginação). O reset do core row
+    // model roda mesmo no primeiro cálculo de uma instância nova (sem skipFirstRun, ao
+    // contrário do de sorting/filtering) — isso resetava a página para 0 toda vez que o
+    // componente remontava, sobrescrevendo o pageIndex controlado e quebrando RN-16
+    // (persistência de página entre navegações). RN-08/RN-17 já cobrem os resets desejados
+    // via efeito próprio, com a guarda de primeiro-render que a lib não tem.
+    autoResetAll: false,
     state: { sorting, columnFilters, globalFilter, pagination },
     onSortingChange: (updater) => setSorting(updater),
     onColumnFiltersChange: (updater) => setColumnFilters(updater),
@@ -80,14 +90,22 @@ export function useTableListing() {
   };
 
   // RN-08: mudar filtro geral, filtro de coluna ou ordenação volta para a página 1.
-  // O ref evita disparar no mount/remontagem (RN-16 precisa preservar a página ao voltar da edição).
-  const isFirstRender = useRef(true);
+  // Compara com o valor anterior guardado em ref (em vez de um booleano "isFirstRender") porque o
+  // React StrictMode roda este efeito 2x em desenvolvimento a cada montagem: um booleano simples
+  // já fica `false` na primeira invocação simulada, então a segunda dispara um reset indevido — o
+  // que quebrava RN-16 sempre que HomePage remontava (ex.: voltar da tela de edição). Comparando
+  // contra o valor anterior, a segunda invocação vê "não mudou" e não dispara de novo.
+  const previousFiltersRef = useRef({ sorting, columnFilters, globalFilter });
   useEffect(() => {
-    if (isFirstRender.current) {
-      isFirstRender.current = false;
-      return;
+    const previous = previousFiltersRef.current;
+    const changed =
+      previous.sorting !== sorting ||
+      previous.columnFilters !== columnFilters ||
+      previous.globalFilter !== globalFilter;
+    previousFiltersRef.current = { sorting, columnFilters, globalFilter };
+    if (changed) {
+      table.setPageIndex(0);
     }
-    table.setPageIndex(0);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [sorting, columnFilters, globalFilter]);
 

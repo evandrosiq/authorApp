@@ -1,5 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import { StrictMode } from "react";
 import { MemoryRouter, Route, Routes, useNavigate } from "react-router-dom";
 import { describe, expect, it } from "vitest";
 import { ApplicationContextProvider } from "../context/ContextManager";
@@ -67,6 +68,76 @@ describe("useTableListing — persistência entre navegações (RN-16)", () => {
 
     await user.click(screen.getByText("voltar"));
     expect(screen.getByTestId("general-filter")).toHaveTextContent("silva");
+  });
+});
+
+function ListingFullState() {
+  const { columnFilters, setColumnFilter, sort, toggleSort, page, setPage } = useTableListing();
+  const navigate = useNavigate();
+  return (
+    <div>
+      <span data-testid="author-filter">{columnFilters.author}</span>
+      <span data-testid="sort">{sort ? `${sort.field}-${sort.direction}` : "none"}</span>
+      <span data-testid="page">{page}</span>
+      <input
+        aria-label="filtro-autor"
+        value={columnFilters.author}
+        onChange={(event) => setColumnFilter("author", event.target.value)}
+      />
+      <button onClick={() => toggleSort("title")}>ordenar-titulo</button>
+      <button onClick={() => setPage(page + 1)}>proxima-pagina</button>
+      <button onClick={() => navigate("/editar/1")}>editar</button>
+    </div>
+  );
+}
+
+function renderFullStateScenario() {
+  // StrictMode (igual a src/main.tsx): roda cada efeito 2x na montagem, em desenvolvimento.
+  // Um bug real já escapou de testes sem essa proteção — um efeito que usava um simples
+  // useRef "isFirstRender" não era resiliente à segunda invocação simulada, disparando um
+  // reset de página indevido sempre que HomePage remontava (voltar da edição).
+  return render(
+    <StrictMode>
+      <MemoryRouter initialEntries={["/"]}>
+        <ApplicationContextProvider>
+          <Routes>
+            <Route path="/" element={<ListingFullState />} />
+            <Route path="/editar/:id" element={<EditPlaceholder />} />
+          </Routes>
+        </ApplicationContextProvider>
+      </MemoryRouter>
+    </StrictMode>,
+  );
+}
+
+describe("useTableListing — persistência combinada entre navegações (RN-16, CA-12)", () => {
+  it("mantém filtro de coluna, ordenação e página ao navegar para editar e voltar (sob StrictMode)", async () => {
+    for (let i = 0; i < 25; i += 1) {
+      create(makeAuthor({ id: String(i), index: i, author: `Autor ${i}` }));
+    }
+    const user = userEvent.setup();
+    renderFullStateScenario();
+
+    await user.type(screen.getByLabelText("filtro-autor"), "Autor");
+    expect(await screen.findByTestId("author-filter")).toHaveTextContent("Autor");
+
+    // Ordenação desc por título: um clique ordena asc, um segundo inverte para desc.
+    await user.click(screen.getByText("ordenar-titulo"));
+    expect(await screen.findByTestId("sort")).toHaveTextContent("title-asc");
+    await user.click(screen.getByText("ordenar-titulo"));
+    expect(await screen.findByTestId("sort")).toHaveTextContent("title-desc");
+
+    await user.click(screen.getByText("proxima-pagina"));
+    expect(await screen.findByTestId("page")).toHaveTextContent("2");
+
+    await user.click(screen.getByText("editar"));
+    expect(screen.queryByLabelText("filtro-autor")).not.toBeInTheDocument();
+
+    await user.click(screen.getByText("voltar"));
+
+    expect(screen.getByTestId("author-filter")).toHaveTextContent("Autor");
+    expect(screen.getByTestId("sort")).toHaveTextContent("title-desc");
+    expect(screen.getByTestId("page")).toHaveTextContent("2");
   });
 });
 

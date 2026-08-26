@@ -372,3 +372,18 @@ listagem existente, para quem cadastra e consulta autores/obras.
   paginação/ordenação genérica virou responsabilidade da lib, sem função
   pura própria para testar isoladamente). Gates verdes; confirmado também
   manualmente no browser real.
+- 2026-08-26 — `/revisar-regras` re-auditou as 19 RNs pós-migração (ADR-0002):
+  16 `COBERTA`, 4 `PARCIAL` (RN-08, RN-14, RN-15, RN-16 — faltava exercitar
+  algum caso citado explicitamente na RN/CA), 1 `AUSENTE` (RN-19, paginação
+  oculta com zero resultados, sem teste algum). Nenhuma `DIVERGENTE`. Ações
+  tomadas: 8 testes novos entre `home.test.tsx` e `useTableListing.test.tsx`
+  fechando as 5 pendências; removido `EMPTY_COLUMN_FILTERS` (código morto);
+  comentários de `enableSortingRemoval`/auto-reset corrigidos para refletir a
+  implementação real. **Ao escrever o teste mais rigoroso de RN-16 (persistência
+  combinada de filtro+ordenação+página), foi descoberto um bug real e
+  divergente**: a página não sobrevivia à navegação editar→voltar no browser
+  real (só nos testes, que não usam `StrictMode`) — causa e correção
+  detalhadas no ADR-0002 ("Bug encontrado: reset de página indevido sob
+  `React.StrictMode`"). Corrigido, confirmado no browser real e protegido por
+  teste que roda deliberadamente sob `<StrictMode>`. 55 testes no total, gates
+  verdes. **SPEC-001 re-fechada: 19/19 RNs cobertas na implementação atual.**

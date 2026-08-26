@@ -209,6 +209,49 @@ describe("HomePage — paginação e contador (RN-07, RN-08, RN-14)", () => {
     await user.type(screen.getByLabelText("Buscar"), "Autor 0");
     expect(await screen.findByText("Página 1 de 1")).toBeInTheDocument();
   });
+
+  it("RN-08: alterar um filtro de coluna enquanto em outra página volta para a página 1", async () => {
+    for (let i = 0; i < 15; i += 1) {
+      create(makeAuthor({ id: String(i), index: i, author: `Autor ${String(i).padStart(2, "0")}` }));
+    }
+    const user = userEvent.setup();
+    renderHomePage();
+    await screen.findByText("Mostrando 1–10 de 15");
+
+    await user.click(screen.getByRole("button", { name: "Próxima" }));
+    expect(await screen.findByText("Mostrando 11–15 de 15")).toBeInTheDocument();
+
+    await user.type(screen.getByLabelText("Autor"), "Autor 0");
+    expect(await screen.findByText("Página 1 de 1")).toBeInTheDocument();
+  });
+
+  it("RN-08: alterar a ordenação enquanto em outra página volta para a página 1", async () => {
+    for (let i = 0; i < 15; i += 1) {
+      create(makeAuthor({ id: String(i), index: i, author: `Autor ${String(i).padStart(2, "0")}` }));
+    }
+    const user = userEvent.setup();
+    renderHomePage();
+    await screen.findByText("Mostrando 1–10 de 15");
+
+    await user.click(screen.getByRole("button", { name: "Próxima" }));
+    expect(await screen.findByText("Página 2 de 2")).toBeInTheDocument();
+
+    await user.click(screen.getByRole("button", { name: "Autor" }));
+    expect(await screen.findByText("Página 1 de 2")).toBeInTheDocument();
+  });
+
+  it("RN-14: total múltiplo exato de 10 preenche a última página por completo", async () => {
+    for (let i = 0; i < 20; i += 1) {
+      create(makeAuthor({ id: String(i), index: i, author: `Autor ${String(i).padStart(2, "0")}` }));
+    }
+    const user = userEvent.setup();
+    renderHomePage();
+    await screen.findByText("Mostrando 1–10 de 20");
+
+    await user.click(screen.getByRole("button", { name: "Próxima" }));
+    expect(await screen.findByText("Mostrando 11–20 de 20")).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Próxima" })).toBeDisabled();
+  });
 });
 
 describe("HomePage — recuo automático de página ao excluir (RN-17)", () => {
@@ -230,6 +273,25 @@ describe("HomePage — recuo automático de página ao excluir (RN-17)", () => {
 });
 
 describe("HomePage — limpar filtros (RN-15)", () => {
+  it("RN-15: o próprio botão reseta a página, independente de qualquer filtro mudar de valor", async () => {
+    // Isola o reset de página do efeito colateral da RN-08 (que já reseta a página
+    // sempre que um filtro muda de valor): aqui nenhum filtro é alterado, então só o
+    // `clearFilters` explícito pode ser responsável pela volta à página 1.
+    for (let i = 0; i < 15; i += 1) {
+      create(makeAuthor({ id: String(i), index: i, author: `Autor ${String(i).padStart(2, "0")}` }));
+    }
+    const user = userEvent.setup();
+    renderHomePage();
+    await screen.findByText("Mostrando 1–10 de 15");
+
+    await user.click(screen.getByRole("button", { name: "Próxima" }));
+    expect(await screen.findByText("Página 2 de 2")).toBeInTheDocument();
+
+    await user.click(screen.getByRole("button", { name: "Limpar filtros" }));
+
+    expect(await screen.findByText("Página 1 de 2")).toBeInTheDocument();
+  });
+
   it("reseta busca geral e filtros de coluna, volta à página 1, mas preserva a ordenação", async () => {
     for (let i = 0; i < 15; i += 1) {
       create(
@@ -284,6 +346,29 @@ describe("HomePage — estado vazio do filtro (RN-09)", () => {
     renderHomePage();
 
     expect(await screen.findByAltText("Não há dados")).toBeInTheDocument();
+  });
+
+  it("RN-19: paginação e contador ficam ausentes na base vazia (nenhum item cadastrado)", async () => {
+    renderHomePage();
+    await screen.findByAltText("Não há dados");
+
+    expect(screen.queryByText(/^Mostrando/)).not.toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: "Anterior" })).not.toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: "Próxima" })).not.toBeInTheDocument();
+  });
+
+  it("RN-19: paginação e contador ficam ausentes quando o filtro não bate com nenhum item", async () => {
+    create(makeAuthor({ id: "1", author: "João Silva" }));
+    const user = userEvent.setup();
+    renderHomePage();
+    await screen.findByText("João Silva");
+
+    await user.type(screen.getByLabelText("Buscar"), "inexistente");
+    await screen.findByText("Nenhum resultado encontrado para os filtros aplicados.");
+
+    expect(screen.queryByText(/^Mostrando/)).not.toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: "Anterior" })).not.toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: "Próxima" })).not.toBeInTheDocument();
   });
 
   it("RN-09/RN-17: excluir o único item cadastrado volta à base vazia, não à mensagem de filtro", async () => {

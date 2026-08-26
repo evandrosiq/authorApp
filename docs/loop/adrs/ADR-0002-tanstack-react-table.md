@@ -137,6 +137,42 @@ específico. Nada a mudar agora — a mitigação acima segue vigente. Repetir e
 checagem (`npm view @tanstack/react-table time.modified`) antes de qualquer
 tentativa futura de voltar a passar `table` para componentes filhos.
 
+## Bug encontrado: reset de página indevido sob `React.StrictMode` (quebrava RN-16)
+
+Descoberto em 2026-08-26 por `/revisar-regras`: o efeito que implementa RN-08
+(mudar filtro/ordenação volta para a página 1) usava um `useRef(true)` como
+flag "é o primeiro render" para não disparar no mount — necessário porque
+RN-16 exige que a página sobreviva à remontagem de `HomePage` (voltar da tela
+de edição). Esse padrão **não é resiliente a `React.StrictMode`**
+(`src/main.tsx`), que roda cada efeito duas vezes na montagem, em
+desenvolvimento: a primeira invocação simulada já consome a flag (`true` →
+`false`), e a segunda invocação — do mesmo mount, sem nenhum novo render no
+meio — via a flag já `false` e disparava o reset indevidamente, sempre que
+`HomePage` remontava.
+
+Sintoma: os testes automatizados passavam (Testing Library `render()` não usa
+`StrictMode` por padrão), mas no browser real a página sempre voltava para 1
+ao editar um item e voltar — reproduzido com um driver CDP manual navegando
+`/` → `/editar/:id` → `/` de verdade. Sem esse teste no browser real (só
+confiando na suíte automatizada), esse bug teria passado despercebido.
+
+**Correção:** trocar a flag booleana por uma comparação contra o valor
+anterior de `sorting`/`columnFilters`/`globalFilter`, guardado em `useRef`
+(`src/hooks/useTableListing.ts`). Na segunda invocação simulada pelo
+StrictMode, o valor "anterior" já foi atualizado na primeira invocação para
+ser igual ao atual — a comparação corretamente não detecta mudança e não
+dispara de novo. Também foi necessário `autoResetAll: false` na config do
+`useLegacyTable`: o `autoResetPageIndex` nativo da lib roda a cada novo
+cálculo do core row model **sem** a proteção `skipFirstRun` que sorting/
+filtering têm, resetando a página a cada remontagem mesmo com o `pageIndex`
+controlado corretamente via `state`.
+
+**Proteção contra regressão:** o teste de persistência combinada em
+`useTableListing.test.tsx` (RN-16/CA-12) envolve o cenário em `<StrictMode>`
+deliberadamente — sem isso, o teste não pegaria esse tipo de bug (validado
+revertendo a correção e confirmando que o teste falha só com `StrictMode`
+presente).
+
 ## Dependência descartada: `material-react-table`
 
 Cogitada como alternativa para a camada de UI (renderização pronta em cima do

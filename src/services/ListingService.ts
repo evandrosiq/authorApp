@@ -42,12 +42,6 @@ export interface ColumnFilters {
   typeOfWork: string;
 }
 
-export const EMPTY_COLUMN_FILTERS: ColumnFilters = {
-  author: "",
-  title: "",
-  typeOfWork: "",
-};
-
 export type SortField = "author" | "typeOfWork" | "title";
 export type SortDirection = "asc" | "desc";
 
